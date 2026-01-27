@@ -1,0 +1,140 @@
+/* Estilos para el efecto de volteo en las tarjetas de servicio */
+
+.servicios-flip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 0 var(--container-pad-x) 2rem;
+    perspective: 1000px; /* Habilita el efecto 3D en el contenedor */
+}
+
+.servicio-flip {
+    background-color: transparent;
+    height: 250px; /* Altura fija para que el volteo sea uniforme */
+    cursor: pointer;
+}
+
+.servicio-inner {
+    position: relative;
+    width: 100%;
+    height: 110%;
+    text-align: center;
+    transition: transform 0.8s; /* Duración de la animación */
+    transform-style: preserve-3d; /* Permite que los elementos hijos se posicionen en el espacio 3D */
+    box-shadow: var(--shadow-1);
+    border-radius: var(--radius-lg);
+}
+
+.servicio-flip:hover .servicio-inner {
+    transform: rotateY(180deg); /* Voltear la tarjeta al pasar el mouse */
+}
+
+.servicio-front, .servicio-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Oculta la parte trasera cuando no está volteada */
+    backface-visibility: hidden;
+    border: 1px solid var(--color-card-border);
+    background: var(--color-card-bg);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.servicio-front h3, .servicio-back h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.servicio-back {
+    background-color: var(--color-primary-600);
+    color: var(--color-footer-bg);
+    transform: rotateY(180deg);
+    display: flex; /* Habilita el modelo de caja flexible */
+    flex-direction: column; /* Coloca los elementos hijos en una columna */
+    justify-content: center; /* Centra el contenido verticalmente */
+    align-items: center; /* Centra el contenido horizontalmente */
+    text-align: center; /* Asegura que el texto dentro de los elementos esté centrado */
+    padding: 1rem; /* Añade un poco de espacio interno para evitar que el texto toque los bordes */
+}
+
+.servicio-back p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    opacity: 1; /* Asegura que la descripción sea visible */
+    font-weight: 500;
+}
+
+.btn-more {
+    display: inline-block;
+    padding: 0.5em 1.2em;
+    background: var(--color-footer-bg);
+    color: var(--color-primary-600);
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 999px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-more:hover {
+    background: #ffffff;
+    transform: translateY(-1px);
+}
+
+.icono {
+    width: 60px; /* Tamaño fijo para todos los iconos */
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.icono img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+
+
+/* ESTILOS DEFINITIVOS PARA EL BOTÓN DE COTIZACIÓN (MÁXIMA PRIORIDAD) */
+
+/* Aplica el estilo base a los estados normales y visitados del enlace */
+#cotizacion-link,
+#cotizacion-link:link,
+#cotizacion-link:visited {
+  /* Propiedades del botón de la sección Hero */
+  background: var(--color-primary); /* El color cian */
+  color: #0f1113 !important; /* Usamos !important para asegurar el color de texto oscuro y eliminar el morado */
+  border: 0;
+  padding: .9em 1.6em;
+  border-radius: 999px; /* Esquinas curvas */
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1.2em;
+  transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
+  box-shadow: var(--zaniti-shadow);
+
+  /* Elimina el aspecto de enlace por defecto */
+  display: inline-block;
+  text-decoration: none !important; /* Forzamos la eliminación del subrayado */
+  font-weight: 700;
+}
+
+/* Estilos para los estados interactivos */
+#cotizacion-link:hover,
+#cotizacion-link:active,
+#cotizacion-link:focus {
+  transform: translateY(-1px);
+  background: var(--color-primary-600);
+  box-shadow: var(--shadow-2);
+  color: #0f1113 !important; /* Aseguramos el color en el hover/active */
+}
+
