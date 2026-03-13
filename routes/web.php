@@ -5,6 +5,7 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CotizacionController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes - Proyecto ZanitiMVC
@@ -44,3 +45,5 @@ Route::post('/cotizacion/enviar', [CotizacionController::class, 'submit'])->name
 // 5. Ruta Dinámica de Servicios Detallados
 // El parámetro {servicio} permite que una sola vista muestre múltiples servicios
 Route::get('/servicios/{servicio}', [ServicioController::class, 'show'])->name('servicios.show');
+//6.RUta de mail
+Route::post('/contacto', [ContactoController::class, 'enviar'])->name('contacto.enviar');
