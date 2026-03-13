@@ -10,6 +10,14 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CotizacionController;
 
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes - Proyecto ZanitiMVC
+|--------------------------------------------------------------------------
+| Aquí se definen todas las rutas de la aplicación. Cada ruta responde a 
+| una URL específica y llama a una Vista o a un Controlador.
+*/
 // Controladores de la API / Panel Administrativo
 use App\Http\Controllers\Api\InventarioController;
 use App\Http\Controllers\Api\ServicioController as ApiServicioController;
@@ -125,6 +133,11 @@ Route::middleware(['auth'])->group(function () {
         }
         )->name('clientes');
 
+// 5. Ruta Dinámica de Servicios Detallados
+// El parámetro {servicio} permite que una sola vista muestre múltiples servicios
+Route::get('/servicios/{servicio}', [ServicioController::class, 'show'])->name('servicios.show');
+//6.RUta de mail
+Route::post('/contacto', [ContactoController::class, 'enviar'])->name('contacto.enviar');
         Route::get('/datos-clientes', [ClienteController::class , 'index']);
         Route::post('/clientes/guardar', [ClienteController::class , 'store']);
         Route::post('/clientes/actualizar/{id}', [ClienteController::class , 'update']);
