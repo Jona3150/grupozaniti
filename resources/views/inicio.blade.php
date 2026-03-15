@@ -4,19 +4,18 @@
 
 @section('content')
     <section id="inicio" class="hero">
-        <div class="logo-main-wrap">
-            <img src="{{ asset('img/logobg.png') }}" alt="Zaniti marca secundaria" class="logo-main">
-        </div>
-        <br>
-        <h1>Creamos espacios limpios y seguros</h1>
-        <br>
-        <p>Soluciones certificadas para hogares y empresas: desinfección, control de plagas y programas preventivos con resultados confiables.</p>
-        <br>
-        <a href="{{ url('/cotizacion') }}" id="cotizacion-link">
-            Solicitar cotización
-        </a>
-        <br>
-    </section>
+    <div class="logo-main-wrap">
+        <img src="{{ asset('img/logobg.png') }}" alt="Zaniti Principal" class="logo-main">
+    </div>
+    
+    <h1>Creamos espacios limpios y seguros</h1>
+    
+    <p>Soluciones certificadas para hogares y empresas: desinfección, control de plagas y programas preventivos con resultados confiables.</p>
+    
+    <a href="{{ url('/cotizacion') }}" id="cotizacion-link">
+        Solicitar cotización
+    </a>
+</section>
 
     <section class="carousel zaniti" aria-label="Galería Zaniti">
         <div class="carousel-viewport">

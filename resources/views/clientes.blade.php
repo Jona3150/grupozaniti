@@ -229,15 +229,29 @@
                         <input type="text" ng-if="nuevoCliente.tipo === 'Otro'" ng-model="nuevoCliente.tipo_otro" class="form-control input-otro" placeholder="¿Qué tipo es?">
                     </div>
                     <div class="form-group">
-                        <label>Teléfono de Contacto</label>
-                        <input type="text" ng-model="nuevoCliente.telefono" class="form-control" placeholder="888-888-8888">
-                    </div>
+                            <label>Teléfono (10 dígitos):</label>
+                            <input type="tel" 
+                                class="form-control" 
+                                ng-model="nuevoCliente.telefono" 
+                                maxlength="10" 
+                                minlength="10" 
+                                placeholder="Ej: 5512345678"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                        </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Correo Electrónico (Opcional)</label>
-                    <input type="email" ng-model="nuevoCliente.email" class="form-control" placeholder="cliente@correo.com">
-                </div>
+    <label>Correo Electrónico (Opcional):</label>
+    <input type="email" 
+           name="correo"
+           class="form-control" 
+           ng-model="nuevoCliente.email" 
+           placeholder="ejemplo@correo.com">
+    
+    <small class="text-danger" ng-show="clienteForm.correo.$invalid && clienteForm.correo.$dirty">
+        Por favor, ingresa un correo válido.
+    </small>
+</div>
 
                 <div class="form-group">
                     <label>Dirección de Servicio</label>
@@ -255,8 +269,10 @@
 
             <div class="modal-actions">
                 <button class="btn-cancel" ng-click="cerrarModal()">Descartar</button>
-                <button class="btn-save" ng-click="guardarCliente()">@{{ editando ? 'Guardar Cambios' : 'Registrar Cliente' }}</button>
-            </div>
+<button class="btn-save" ng-click="guardarCliente()" ng-disabled="guardando">
+    <i class="fas" ng-class="guardando ? 'fa-spinner fa-spin' : 'fa-save'"></i> 
+    @{{ guardando ? 'Guardando...' : (editando ? 'Guardar Cambios' : 'Registrar Cliente') }}
+</button>            </div>
         </div>
     </div>
 

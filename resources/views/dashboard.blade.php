@@ -7,36 +7,73 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard-style.css') }}">
     <style>
-        /* Estilo del Toast de Bienvenida (Superior Derecho) */
-        .welcome-msg {
-            position: fixed; top: 20px; right: 20px;
-            background: #06261b; color: #4ade80;
-            padding: 12px 20px; border-radius: 8px;
-            display: flex; align-items: center; gap: 10px;
-            font-size: 0.9rem; font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000; animation: fadeInRight 0.5s ease;
-        }
-        @keyframes fadeInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    /* Estilo del Toast de Bienvenida */
+    .welcome-msg {
+        position: fixed; top: 20px; right: 20px;
+        background: #06261b; color: #4ade80;
+        padding: 12px 20px; border-radius: 8px;
+        display: flex; align-items: center; gap: 10px;
+        font-size: 0.9rem; font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1100; animation: fadeInRight 0.5s ease;
+    }
+    @keyframes fadeInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* Contenedores de Resumen */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: white; padding: 25px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f1f5f9; }
-        .stat-card h2 { font-size: 1.8rem; margin: 5px 0; color: #1e293b; }
-        .stat-card span { font-size: 0.85rem; color: #64748b; }
-        
-        .icon-circle { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .bg-blue { background: #eff6ff; color: #3b82f6; }
-        .bg-green { background: #f0fdf4; color: #22c55e; }
-        .bg-purple { background: #faf5ff; color: #a855f7; }
-        .bg-orange { background: #fff7ed; color: #f97316; }
+    /* --- DASHBOARD RESPONSIVO --- */
+    
+    /* Contenedor de Tarjetas Superiores */
+    .dashboard-grid { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+        gap: 20px; 
+        margin-bottom: 30px; 
+    }
 
-        .content-split { display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px; }
-        .section-card { background: white; padding: 25px; border-radius: 16px; border: 1px solid #f1f5f9; }
-        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f8fafc; }
-        .status-pill { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #fffbeb; color: #b45309; }
-        .btn-reabastecer { color: #ef4444; font-size: 0.8rem; font-weight: 700; text-decoration: none; cursor: pointer; }
-    </style>
+    .stat-card { 
+        background: white; padding: 25px; border-radius: 16px; 
+        display: flex; justify-content: space-between; align-items: center; 
+        border: 1px solid #f1f5f9; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    
+    .stat-card h2 { font-size: 1.8rem; margin: 5px 0; color: #1e293b; }
+    .stat-card span { font-size: 0.85rem; color: #64748b; font-weight: 600; }
+    
+    .icon-circle { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .bg-blue { background: #eff6ff; color: #3b82f6; }
+    .bg-green { background: #f0fdf4; color: #22c55e; }
+    .bg-purple { background: #faf5ff; color: #a855f7; }
+    .bg-orange { background: #fff7ed; color: #f97316; }
+
+    /* Contenedor Inferior (Servicios y Stock) */
+    .content-split { 
+        display: grid; 
+        grid-template-columns: 1.5fr 1fr; 
+        gap: 25px; 
+    }
+
+    .section-card { background: white; padding: 25px; border-radius: 16px; border: 1px solid #f1f5f9; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f8fafc; gap: 10px; }
+    
+    .status-pill { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #fffbeb; color: #b45309; white-space: nowrap; }
+    .btn-reabastecer { color: #ef4444; font-size: 0.8rem; font-weight: 700; text-decoration: none; cursor: pointer; white-space: nowrap; }
+
+    /* --- MEDIA QUERIES PARA MÓVIL --- */
+    @media (max-width: 1024px) {
+        .content-split { grid-template-columns: 1fr; } /* Apila las secciones inferiores */
+    }
+
+    @media (max-width: 768px) {
+        .main-content { padding: 80px 15px 20px !important; } /* Da espacio al botón de menú */
+        .stat-card { padding: 20px; }
+        .stat-card h2 { font-size: 1.5rem; }
+        header h1 { font-size: 1.5rem !important; }
+    }
+
+    @media (max-width: 480px) {
+        .item-row { flex-direction: row; flex-wrap: wrap; } /* Permite que el texto fluya */
+        .status-pill, .btn-reabastecer { margin-top: 5px; }
+    }
+</style>
 </head>
 <body ng-controller="DashboardController">
 

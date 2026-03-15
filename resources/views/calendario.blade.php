@@ -219,9 +219,10 @@
 
             <div class="modal-actions">
                 <button class="btn-cancel" ng-click="cerrarModal()">Descartar</button>
-                <button class="btn-save" ng-click="guardarServicio()">
-                    <i class="fas fa-save"></i> @{{ editando ? 'Guardar Cambios' : 'Agendar' }}
-                </button>
+                <button class="btn-save" ng-click="guardarServicio()" ng-disabled="guardando">
+    <i class="fas" ng-class="guardando ? 'fa-spinner fa-spin' : 'fa-save'"></i> 
+    @{{ guardando ? 'Procesando...' : (editando ? 'Guardar Cambios' : 'Agendar') }}
+</button>
             </div>
         </div>
     </div>

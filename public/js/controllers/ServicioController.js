@@ -96,10 +96,16 @@ zanitiApp.controller('ServicioController', ['$scope', '$http', function ($scope,
      * 4. Guardar o Actualizar
      */
     $scope.guardarServicio = function () {
+        // 1. Evitar múltiples clics si ya se está procesando
+        if ($scope.guardando) return;
+
         if (!$scope.nuevoServicio.cliente || !$scope.nuevoServicio.tecnico || !$scope.nuevoServicio.direccion) {
             alert("Por favor, completa Cliente, Técnico y Dirección.");
             return;
         }
+
+        // 2. Bloqueamos el proceso
+        $scope.guardando = true;
 
         // Preparamos los datos para Laravel (convertimos Date a String)
         let datosAEnviar = angular.copy($scope.nuevoServicio);
@@ -121,6 +127,9 @@ zanitiApp.controller('ServicioController', ['$scope', '$http', function ($scope,
         }, function (error) {
             console.error("Error al guardar:", error);
             alert("No se pudo guardar. Verifica que todos los campos estén llenos.");
+        }).finally(function () {
+            // 3. Pase lo que pase (éxito o error), liberamos el botón al terminar
+            $scope.guardando = false;
         });
     };
 
@@ -131,14 +140,38 @@ zanitiApp.controller('ServicioController', ['$scope', '$http', function ($scope,
         $scope.editando = true;
         let clon = angular.copy(servicio);
 
-        // Convertimos Strings de la DB a objetos Date para que el modal los muestre bien
-        if (clon.fecha) clon.fecha = new Date(clon.fecha + 'T00:00:00');
+        // 1. Obtener la fecha de hoy en formato Date de JS
+        let hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        // 2. Corregir la Fecha
+        if (clon.fecha) {
+            // Usamos el reemplazo de guiones por barras para evitar el error de "un día menos"
+            // y creamos el objeto Date directamente.
+            let fechaConvertida = new Date(clon.fecha.replace(/-/g, '\/'));
+
+            // Si la fecha es válida, la asignamos; si no, ponemos la de hoy
+            $scope.nuevoServicio_fecha = (isNaN(fechaConvertida.getTime())) ? hoy : fechaConvertida;
+        } else {
+            $scope.nuevoServicio_fecha = hoy;
+        }
+
+        // 3. Corregir la Hora
         if (clon.hora) {
             let parts = clon.hora.split(':');
             let h = new Date();
             h.setHours(parseInt(parts[0]), parseInt(parts[1]), 0, 0);
             clon.hora = h;
+        } else {
+            // Si no hay hora, podemos poner la hora actual por defecto
+            let h = new Date();
+            h.setSeconds(0);
+            h.setMilliseconds(0);
+            clon.hora = h;
         }
+
+        // 4. Asignar la fecha corregida al objeto que usa el modal
+        clon.fecha = $scope.nuevoServicio_fecha;
 
         $scope.nuevoServicio = clon;
         $scope.mostrarModal = true;

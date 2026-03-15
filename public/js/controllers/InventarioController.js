@@ -1,26 +1,26 @@
 /**
  * Controlador de AngularJS para la gestión del Inventario - Zaniti
  */
-zanitiApp.controller('InventarioController', ['$scope', '$http', function($scope, $http) {
-    
+zanitiApp.controller('InventarioController', ['$scope', '$http', function ($scope, $http) {
+
     // --- Variables de Estado ---
     $scope.productos = [];
     $scope.cargando = true;
-    $scope.busqueda = ""; 
-    $scope.mostrarModal = false; 
-    $scope.editando = false; 
+    $scope.busqueda = "";
+    $scope.mostrarModal = false;
+    $scope.editando = false;
     $scope.datosLlenos = false; // Controla la pista visual de autocompletado
     $scope.nuevoProducto = {};
 
     /**
      * 1. Cargar inventario desde la base de datos
      */
-    $scope.obtenerInventario = function() {
+    $scope.obtenerInventario = function () {
         $scope.cargando = true;
-        $http.get('/datos-inventario').then(function(response) {
+        $http.get('/datos-inventario').then(function (response) {
             $scope.productos = response.data;
             $scope.cargando = false;
-        }, function(error) {
+        }, function (error) {
             console.error("Error al cargar datos:", error);
             $scope.cargando = false;
         });
@@ -30,11 +30,11 @@ zanitiApp.controller('InventarioController', ['$scope', '$http', function($scope
      * 2. Lógica de Autocompletado para Proveedor
      * Se activa con TAB o Doble Clic en la vista
      */
-    $scope.autocompletarProveedor = function() {
+    $scope.autocompletarProveedor = function () {
         if (!$scope.nuevoProducto.proveedor || $scope.nuevoProducto.proveedor.length < 2) return;
 
         // Buscar coincidencia en productos ya registrados
-        let coincidencia = $scope.productos.find(function(p) {
+        let coincidencia = $scope.productos.find(function (p) {
             return p.proveedor && p.proveedor.toLowerCase().includes($scope.nuevoProducto.proveedor.toLowerCase());
         });
 
@@ -48,7 +48,7 @@ zanitiApp.controller('InventarioController', ['$scope', '$http', function($scope
     /**
      * 3. Funciones del Modal
      */
-    $scope.abrirModal = function() {
+    $scope.abrirModal = function () {
         $scope.editando = false;
         $scope.datosLlenos = false;
         $scope.nuevoProducto = {
@@ -60,13 +60,13 @@ zanitiApp.controller('InventarioController', ['$scope', '$http', function($scope
         $scope.mostrarModal = true;
     };
 
-    $scope.editarProducto = function(producto) {
+    $scope.editarProducto = function (producto) {
         $scope.editando = true;
         $scope.nuevoProducto = angular.copy(producto);
         $scope.mostrarModal = true;
     };
 
-    $scope.cerrarModal = function() {
+    $scope.cerrarModal = function () {
         $scope.mostrarModal = false;
         $scope.nuevoProducto = {};
         $scope.editando = false;
@@ -76,7 +76,10 @@ zanitiApp.controller('InventarioController', ['$scope', '$http', function($scope
     /**
      * 4. Guardar o Actualizar Producto
      */
-    $scope.guardarProducto = function() {
+    $scope.guardarProducto = function () {
+        // 1. Evitar múltiples envíos si ya se está procesando
+        if ($scope.guardando) return;
+
         // Validación básica
         if (!$scope.nuevoProducto.nombre || $scope.nuevoProducto.precio === undefined) {
             alert("El nombre y el precio son obligatorios.");
@@ -94,35 +97,42 @@ zanitiApp.controller('InventarioController', ['$scope', '$http', function($scope
             datosAEnviar.categoria = datosAEnviar.categoria_otra;
         }
 
+        // 2. Activamos el estado de bloqueo
+        $scope.guardando = true;
+
         let url = $scope.editando ? '/productos/actualizar/' + datosAEnviar.id : '/productos/guardar';
-        
-        $http.post(url, datosAEnviar).then(function(response) {
-            $scope.obtenerInventario(); // Recarga para que el nuevo proveedor/categoría ya sea "conocido"
+
+        $http.post(url, datosAEnviar).then(function (response) {
+            $scope.obtenerInventario(); // Recarga para que los datos aparezcan en la tabla
             $scope.cerrarModal();
-        }, function(error) {
+            alert("¡Producto guardado con éxito!");
+        }, function (error) {
             console.error("Error:", error);
             alert("Hubo un error al procesar la solicitud.");
+        }).finally(function () {
+            // 3. Liberamos el botón siempre, incluso si hubo error
+            $scope.guardando = false;
         });
     };
 
     /**
      * 5. Utilidades y Métricas
      */
-    $scope.eliminarProducto = function(id) {
-        if(confirm("¿Estás seguro de eliminar este producto de forma permanente?")) {
-            $http.post('/productos/eliminar/' + id).then(function(response) {
+    $scope.eliminarProducto = function (id) {
+        if (confirm("¿Estás seguro de eliminar este producto de forma permanente?")) {
+            $http.post('/productos/eliminar/' + id).then(function (response) {
                 $scope.obtenerInventario();
             });
         }
     };
 
-    $scope.esStockBajo = function(producto) {
+    $scope.esStockBajo = function (producto) {
         return parseInt(producto.cantidad) <= parseInt(producto.stock_minimo);
     };
 
-    $scope.calcularValorTotal = function() {
+    $scope.calcularValorTotal = function () {
         let total = 0;
-        angular.forEach($scope.productos, function(p) {
+        angular.forEach($scope.productos, function (p) {
             total += (parseFloat(p.precio) * parseInt(p.cantidad));
         });
         return total;

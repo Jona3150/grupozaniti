@@ -13,20 +13,36 @@
   <link rel="stylesheet" href="{{ asset('css/zaniticss.css') }}"/>
 </head>
 <body>
-  <header>
+ <header>
     <div class="brand">
-      <img src="{{ asset('img/logo.jpg') }}" alt="Zaniti" class="logo"/>
-      <div class="brand-text"><span class="logo-text">Creamos espacios limpios y seguros</span></div>
+        <img src="{{ asset('img/logo.jpg') }}" alt="Zaniti" class="logo"/>
+        <div class="brand-text">
+            <span class="logo-text">Creamos espacios limpios y seguros</span>
+        </div>
     </div>
+
+    <button class="menu-toggle" id="mobile-menu-btn" aria-label="Abrir menú">
+        <span class="hamburger"></span>
+    </button>
+
     <nav class="desktop-nav">
-      <ul>
-        <li><a href="{{ url('/') }}">Inicio</a></li>
-        <li><a href="{{ url('/#servicios') }}">Servicios</a></li>
-        <li><a href="{{ url('/contacto') }}">Contacto</a></li>
-        <li><a href="{{ url('/nosotros') }}">Conocenos</a></li>
-      </ul>
+        <ul>
+            <li><a href="{{ url('/') }}">Inicio</a></li>
+            <li><a href="{{ url('/#servicios') }}">Servicios</a></li>
+            <li><a href="{{ url('/contacto') }}">Contacto</a></li>
+            <li><a href="{{ url('/nosotros') }}">Conocenos</a></li>
+        </ul>
     </nav>
-  </header>
+
+    <nav class="mobile-nav" id="mobile-nav">
+        <ul>
+            <li><a href="{{ url('/') }}">Inicio</a></li>
+            <li><a href="{{ url('/#servicios') }}">Servicios</a></li>
+            <li><a href="{{ url('/contacto') }}">Contacto</a></li>
+            <li><a href="{{ url('/nosotros') }}">Conocenos</a></li>
+        </ul>
+    </nav>
+</header>
 
   <main>
     @yield('content')

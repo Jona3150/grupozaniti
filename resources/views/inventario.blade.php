@@ -202,10 +202,10 @@
 
             <div class="modal-actions">
                 <button class="btn-cancel" ng-click="cerrarModal()">Cerrar</button>
-                <button class="btn-save" ng-click="guardarProducto()">
-                    <i class="fas fa-save"></i> 
-                    @{{ editando ? 'Actualizar Producto' : 'Guardar en Inventario' }}
-                </button>
+                <button class="btn-save" ng-click="guardarProducto()" ng-disabled="guardando">
+    <i class="fas" ng-class="guardando ? 'fa-spinner fa-spin' : 'fa-save'"></i> 
+    @{{ guardando ? 'Guardando...' : (editando ? 'Actualizar Producto' : 'Guardar en Inventario') }}
+</button>
             </div>
         </div>
     </div>
