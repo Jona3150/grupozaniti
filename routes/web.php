@@ -44,6 +44,7 @@ Route::post('/cotizacion/enviar', [CotizacionController::class , 'submit'])->nam
 
 Route::get('/servicios/{servicio}', [ServicioController::class , 'show'])->name('servicios.show');
 
+Route::get('/servicio/limpieza', [ServicioController::class, 'limpieza']);
 
 // --- AUTENTICACIÓN ---
 
