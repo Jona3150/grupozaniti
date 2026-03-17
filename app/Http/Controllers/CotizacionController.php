@@ -3,28 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CotizacionMail;
 
 class CotizacionController extends Controller
 {
     public function submit(Request $request)
     {
-        // Validación rigurosa
+        // Validación
         $request->validate([
             'name'    => 'required|string|max:255',
             'email'   => 'required|email',
             'phone'   => 'required|string',
             'service' => 'required',
             'area'    => 'required|numeric',
-            'image'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Máximo 2MB
+            'contact_method' => 'required',
+            'contact_time' => 'required',
+            'image'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Lógica de negocio: Cálculo de presupuesto base
-        $precioBase = 500;
-        $precioMetro = ($request->service == 'plagas') ? 20 : 15;
-        $totalEstimado = $precioBase + ($request->area * $precioMetro);
+        // Guardamos los datos
+        $data = $request->all();
 
-        // En un futuro, aquí se guardará la imagen en storage/app/public/cotizaciones
+        // Enviar correo a la empresa
+        Mail::to('dejesuscynthia94@gmail.com')
+            ->send(new CotizacionMail($data));
 
-        return back()->with('success', "¡Solicitud recibida! El presupuesto estimado para tu servicio es de $" . number_format($totalEstimado, 2) . " MXN. Nos comunicaremos contigo al teléfono " . $request->phone . " para confirmar.");
+        // Respuesta al usuario
+        return back()->with(
+            'success',
+            'En breve uno de nuestros asesores se pondrá en contacto contigo para brindarte tu cotización.'
+        );
     }
 }
