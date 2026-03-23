@@ -26,9 +26,9 @@
         <a href="/clientes" class="nav-item {{ Request::is('clientes') ? 'active' : '' }}">
             <i class="fas fa-users"></i> Clientes
         </a>
-        <a href="{{ route('perfil') }}" class="nav-item {{ Request::is('perfil') ? 'active' : '' }}">
+        <!-- <a href="{{ route('perfil') }}" class="nav-item {{ Request::is('perfil') ? 'active' : '' }}">
             <i class="fas fa-user-cog"></i> Perfil
-        </a>
+        </a> -->
     </nav>
 
     <div class="sidebar-footer">

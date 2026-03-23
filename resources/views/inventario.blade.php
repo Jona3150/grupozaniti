@@ -184,7 +184,7 @@
 
                 <div class="form-group">
                     <label>Stock Actual</label>
-                    <input type="number" ng-model="nuevoProducto.cantidad">
+                    <input type="number" ng-model="nuevoProducto.cantidad" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                 </div>
                 <div class="form-group">
                     <label>Unidad de Medida</label>
@@ -192,11 +192,11 @@
                 </div>
                 <div class="form-group">
                     <label>Stock Mínimo (Alerta)</label>
-                    <input type="number" ng-model="nuevoProducto.stock_minimo">
+                    <input type="number" ng-model="nuevoProducto.stock_minimo" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                 </div>
                 <div class="form-group">
                     <label>Precio de Compra ($)</label>
-                    <input type="number" step="0.01" ng-model="nuevoProducto.precio">
+                    <input type="number" step="0.01" ng-model="nuevoProducto.precio" min="0" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
                 </div>
             </div>
 

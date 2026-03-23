@@ -5,12 +5,14 @@
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
     padding: 0 var(--container-pad-x) 2rem;
-    perspective: 1000px; /* Habilita el efecto 3D en el contenedor */
+    perspective: 1000px;
+    /* Habilita el efecto 3D en el contenedor */
 }
 
 .servicio-flip {
     background-color: transparent;
-    height: 250px; /* Altura fija para que el volteo sea uniforme */
+    height: 250px;
+    /* Altura fija para que el volteo sea uniforme */
     cursor: pointer;
 }
 
@@ -19,21 +21,26 @@
     width: 100%;
     height: 110%;
     text-align: center;
-    transition: transform 0.8s; /* Duración de la animación */
-    transform-style: preserve-3d; /* Permite que los elementos hijos se posicionen en el espacio 3D */
+    transition: transform 0.8s;
+    /* Duración de la animación */
+    transform-style: preserve-3d;
+    /* Permite que los elementos hijos se posicionen en el espacio 3D */
     box-shadow: var(--shadow-1);
     border-radius: var(--radius-lg);
 }
 
 .servicio-flip:hover .servicio-inner {
-    transform: rotateY(180deg); /* Voltear la tarjeta al pasar el mouse */
+    transform: rotateY(180deg);
+    /* Voltear la tarjeta al pasar el mouse */
 }
 
-.servicio-front, .servicio-back {
+.servicio-front,
+.servicio-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    -webkit-backface-visibility: hidden; /* Oculta la parte trasera cuando no está volteada */
+    -webkit-backface-visibility: hidden;
+    /* Oculta la parte trasera cuando no está volteada */
     backface-visibility: hidden;
     border: 1px solid var(--color-card-border);
     background: var(--color-card-bg);
@@ -46,7 +53,8 @@
     text-align: center;
 }
 
-.servicio-front h3, .servicio-back h3 {
+.servicio-front h3,
+.servicio-back h3 {
     margin-top: 0;
     margin-bottom: 0.5rem;
     line-height: 1.2;
@@ -56,18 +64,25 @@
     background-color: var(--color-primary-600);
     color: var(--color-footer-bg);
     transform: rotateY(180deg);
-    display: flex; /* Habilita el modelo de caja flexible */
-    flex-direction: column; /* Coloca los elementos hijos en una columna */
-    justify-content: center; /* Centra el contenido verticalmente */
-    align-items: center; /* Centra el contenido horizontalmente */
-    text-align: center; /* Asegura que el texto dentro de los elementos esté centrado */
-    padding: 1rem; /* Añade un poco de espacio interno para evitar que el texto toque los bordes */
+    display: flex;
+    /* Habilita el modelo de caja flexible */
+    flex-direction: column;
+    /* Coloca los elementos hijos en una columna */
+    justify-content: center;
+    /* Centra el contenido verticalmente */
+    align-items: center;
+    /* Centra el contenido horizontalmente */
+    text-align: center;
+    /* Asegura que el texto dentro de los elementos esté centrado */
+    padding: 1rem;
+    /* Añade un poco de espacio interno para evitar que el texto toque los bordes */
 }
 
 .servicio-back p {
     margin-top: 0;
     margin-bottom: 1rem;
-    opacity: 1; /* Asegura que la descripción sea visible */
+    opacity: 1;
+    /* Asegura que la descripción sea visible */
     font-weight: 500;
 }
 
@@ -88,7 +103,8 @@
 }
 
 .icono {
-    width: 60px; /* Tamaño fijo para todos los iconos */
+    width: 60px;
+    /* Tamaño fijo para todos los iconos */
     height: 60px;
     display: flex;
     justify-content: center;
@@ -110,79 +126,169 @@
 #cotizacion-link,
 #cotizacion-link:link,
 #cotizacion-link:visited {
-  /* Propiedades del botón de la sección Hero */
-  background: var(--color-primary); /* El color cian */
-  color: #0f1113 !important; /* Usamos !important para asegurar el color de texto oscuro y eliminar el morado */
-  border: 0;
-  padding: .9em 1.6em;
-  border-radius: 999px; /* Esquinas curvas */
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 1.2em;
-  transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
-  box-shadow: var(--zaniti-shadow);
+    /* Propiedades del botón de la sección Hero */
+    background: var(--color-primary);
+    /* El color cian */
+    color: #0f1113 !important;
+    /* Usamos !important para asegurar el color de texto oscuro y eliminar el morado */
+    border: 0;
+    padding: .9em 1.6em;
+    border-radius: 999px;
+    /* Esquinas curvas */
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1.2em;
+    transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
+    box-shadow: var(--zaniti-shadow);
 
-  /* Elimina el aspecto de enlace por defecto */
-  display: inline-block;
-  text-decoration: none !important; /* Forzamos la eliminación del subrayado */
-  font-weight: 700;
+    /* Elimina el aspecto de enlace por defecto */
+    display: inline-block;
+    text-decoration: none !important;
+    /* Forzamos la eliminación del subrayado */
+    font-weight: 700;
 }
 
 /* Estilos para los estados interactivos */
 #cotizacion-link:hover,
 #cotizacion-link:active,
 #cotizacion-link:focus {
-  transform: translateY(-1px);
-  background: var(--color-primary-600);
-  box-shadow: var(--shadow-2);
-  color: #0f1113 !important; /* Aseguramos el color en el hover/active */
+    transform: translateY(-1px);
+    background: var(--color-primary-600);
+    box-shadow: var(--shadow-2);
+    color: #0f1113 !important;
+    /* Aseguramos el color en el hover/active */
 }
 
 /*n*/
-.form-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:35px;
-margin-top:25px;
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+    margin-top: 25px;
 }
 
-.form-column h3{
-margin-bottom:15px;
-color:#2b7a78;
+.form-column h3 {
+    margin-bottom: 15px;
+    color: #2b7a78;
 }
 
-.alert-success{
-background:#d4edda;
-color:#155724;
-padding:20px;
-border-radius:8px;
-margin-bottom:20px;
-border:1px solid #c3e6cb;
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
 }
 
-@media(max-width:768px){
-.form-grid{
-grid-template-columns:1fr;
-}
-}
-.alert-success{
-    max-width:800px;
-    margin:20px auto;
-    background:#d4edda;
-    color:#155724;
-    padding:20px 25px;
-    border-radius:8px;
-    border:1px solid #c3e6cb;
-    text-align:left;
+@media(max-width:768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.alert-success strong{
-    font-size:18px;
-    display:block;
-    margin-bottom:5px;
+.alert-success {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #d4edda;
+    color: #155724;
+    padding: 20px 25px;
+    border-radius: 8px;
+    border: 1px solid #c3e6cb;
+    text-align: left;
 }
 
-.alert-success p{
-    margin:0;
-    font-size:15px;
+.alert-success strong {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.alert-success p {
+    margin: 0;
+    font-size: 15px;
+}
+
+.upload-container {
+    border: 2px dashed #cbd5e0;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-container:hover,
+.upload-container.dragover {
+    border-color: #3182ce;
+    background: #ebf8ff;
+}
+
+.upload-content i {
+    font-size: 2.5rem;
+    color: #4a5568;
+    margin-bottom: 10px;
+}
+
+.upload-content span {
+    color: #3182ce;
+    font-weight: 600;
+}
+
+.preview-box {
+    margin-top: 15px;
+    position: relative;
+    width: 150px;
+}
+
+.preview-box img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+#remove-img {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+/* Estilo general para inputs, selects y textareas */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+    border: 1.5px solid #b1b1b1 !important;
+    /* Borde gris visible permanentemente */
+    border-radius: 8px;
+    padding: 12px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #ffffff;
+}
+
+/* Borde al pasar el mouse (hover) */
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: #888888 !important;
+}
+
+/* Borde al seleccionar el campo (focus) */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #000000 !important;
+    /* Borde negro al seleccionar */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }

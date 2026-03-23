@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\ClienteController;
 
 use App\Http\Controllers\Api\DashboardController;
 
+
 /* |-------------------------------------------------------------------------- | Web Routes - Proyecto Zaniti |-------------------------------------------------------------------------- */
 
 // --- RUTAS PÚBLICAS (Landing Page) ---
@@ -44,7 +45,7 @@ Route::post('/cotizacion/enviar', [CotizacionController::class , 'submit'])->nam
 
 Route::get('/servicios/{servicio}', [ServicioController::class , 'show'])->name('servicios.show');
 
-Route::get('/servicio/limpieza', [ServicioController::class, 'limpieza']);
+Route::get('/servicio/limpieza', [ServicioController::class , 'limpieza']);
 
 // --- AUTENTICACIÓN ---
 
@@ -130,4 +131,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/clientes/guardar', [ClienteController::class , 'store']);
         Route::post('/clientes/actualizar/{id}', [ClienteController::class , 'update']);
         Route::post('/clientes/eliminar/{id}', [ClienteController::class , 'destroy']);
+
+        // Ruta dinámica para los 6 servicios        
+        Route::get('/servicios/{slug}', [App\Http\Controllers\ServicioController::class , 'show']);
+
+        // Esta ruta atrapará /servicios/plagas, /servicios/venta, etc.        
+        Route::get('/servicios/{slug}', [ServicioController::class , 'show'])->name('servicios.show');
     });

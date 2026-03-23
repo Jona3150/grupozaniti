@@ -139,8 +139,8 @@
                     
                     <div style="margin-top: 20px; display: flex; gap: 20px; border-top: 1px solid #f8fafc; padding-top: 15px;">
                         <button ng-click="editarServicio(s)" style="background:none; border:none; color:var(--text-gray); cursor:pointer; font-weight:600;"><i class="fas fa-edit"></i> Editar</button>
-                        <button ng-click="eliminarServicio(s.id)" style="background:none; border:none; color:#e53e3e; cursor:pointer; font-weight:600;"><i class="fas fa-trash"></i> Cancelar</button>
-                    </div>
+<!--                         <button ng-click="eliminarServicio(s.id)" style="background:none; border:none; color:#e53e3e; cursor:pointer; font-weight:600;"><i class="fas fa-trash"></i> Cancelar</button>-->                    
+                        </div>
                 </div>
 
                 <div ng-if="serviciosDelDia.length == 0" style="text-align:center; padding: 60px; color: #94a3b8;">

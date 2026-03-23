@@ -161,7 +161,7 @@
 
         <div class="filter-tabs">
             <button class="tab" ng-class="{'active': filtroTipo == ''}" ng-click="filtroTipo = ''">Todos (@{{clientes.length}})</button>
-            <button class="tab" ng-class="{'active': filtroTipo == 'Activo'}" ng-click="filtroTipo = 'Activo'">Activos</button>
+<!--             <button class="tab" ng-class="{'active': filtroTipo == 'Activo'}" ng-click="filtroTipo = 'Activo'">Activos</button> -->
             <button class="tab" ng-class="{'active': filtroTipo == 'Residencial'}" ng-click="filtroTipo = 'Residencial'">Residencial</button>
             <button class="tab" ng-class="{'active': filtroTipo == 'Comercial'}" ng-click="filtroTipo = 'Comercial'">Comercial</button>
         </div>
@@ -194,7 +194,7 @@
 
                 <div style="margin-top: 20px; display: flex; gap: 15px; border-top: 1px solid #f8fafc; padding-top: 15px;">
                     <button ng-click="editarCliente(c)" style="background:none; border:none; color:var(--text-gray); cursor:pointer; font-weight:600; font-size: 0.85rem;"><i class="fas fa-edit"></i> Editar</button>
-                    <button ng-click="eliminarCliente(c.id)" style="background:none; border:none; color:#e53e3e; cursor:pointer; font-weight:600; font-size: 0.85rem;"><i class="fas fa-trash"></i> Eliminar</button>
+<!--                     <button ng-click="eliminarCliente(c.id)" style="background:none; border:none; color:#e53e3e; cursor:pointer; font-weight:600; font-size: 0.85rem;"><i class="fas fa-trash"></i> Eliminar</button> -->
                 </div>
             </div>
         </div>

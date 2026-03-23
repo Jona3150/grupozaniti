@@ -50,8 +50,7 @@
         <div class="mapa-card">
             <h3>Nuestra ubicación</h3>
             <div id="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3765.234456789!2d-99.789!3d19.289!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDE3JzIwLjQiTiA5OcKwNDcnMjAuNCJX!5e0!3m2!1ses-419!2smx!4v123456789" 
-                        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d941.4026417195253!2d-99.71087813043152!3d19.299294398871993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cd881aec291739%3A0x9f53dc1851021f2!2sZaniti!5e0!3m2!1ses-419!2smx!4v1773733570284!5m2!1ses-419!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
             
             <div class="info-contacto">

@@ -119,9 +119,10 @@ zanitiApp.controller('InventarioController', ['$scope', '$http', function ($scop
      * 5. Utilidades y Métricas
      */
     $scope.eliminarProducto = function (id) {
-        if (confirm("¿Estás seguro de eliminar este producto de forma permanente?")) {
+        if (confirm("¿Estás seguro de desactivar este producto?")) {
             $http.post('/productos/eliminar/' + id).then(function (response) {
-                $scope.obtenerInventario();
+                $scope.obtenerInventario(); // Recarga la tabla
+                alert("Producto removido");
             });
         }
     };

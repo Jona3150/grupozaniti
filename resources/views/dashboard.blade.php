@@ -97,7 +97,7 @@
                 <div class="icon-circle bg-blue"><i class="far fa-calendar-check"></i></div>
             </div>
             <div class="stat-card">
-                <div><span>Productos en Stock</span><h2>@{{stats.productos_stock}}</h2><span>@{{stats.productos_bajos}} bajos</span></div>
+                <div><span>Articulos totales en Stock</span><h2>@{{stats.productos_stock}}</h2><span>@{{stats.productos_bajos}} Producto(s) bajos</span></div>
                 <div class="icon-circle bg-green"><i class="fas fa-box"></i></div>
             </div>
             <div class="stat-card">

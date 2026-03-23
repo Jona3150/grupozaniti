@@ -4,20 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes; // 1. Importamos el Trait
 
 class Producto extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes; // 2. Activamos el borrado lógico
 
-    /**
-     * La tabla asociada al modelo.
-     * Por defecto Laravel busca "productos", pero lo aseguramos aquí.
-     */
     protected $table = 'productos';
 
     /**
      * Los atributos que se pueden asignar de forma masiva.
-     * Basado exactamente en el esquema que subiste.
      */
     protected $fillable = [
         'nombre',
@@ -31,12 +27,11 @@ class Producto extends Model
 
     /**
      * Los atributos que deben ser convertidos a tipos nativos.
-     * Esto asegura que el precio siempre sea tratado como un número decimal 
-     * y la cantidad como entero al llegar a AngularJS.
      */
     protected $casts = [
         'precio' => 'float',
         'cantidad' => 'integer',
         'stock_minimo' => 'integer',
+        'deleted_at' => 'datetime', // 3. Aseguramos el tratamiento de la fecha de borrado
     ];
 }

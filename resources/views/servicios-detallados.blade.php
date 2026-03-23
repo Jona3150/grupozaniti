@@ -54,9 +54,9 @@
         {{ $info['titulo'] }}.
         </p>
 
-        <a href="{{ url('/cotizacion') }}" class="btn-primary">
-          Solicitar cotización
-        </a>
+        <a href="{{ url('/cotizacion?servicio=' . $slug) }}" class="btn-primary">
+  Solicitar cotización
+</a>
 
       </div>
 

@@ -122,6 +122,9 @@ class ServicioController extends Controller
         // Si el servicio no existe, mostramos el de plagas
         $info = $servicios_info[$slug] ?? $servicios_info['plagas'];
 
-        return view('servicios-detallados', compact('info'));
+        // En ServicioController.php        
+        return view('servicios-detallados', [
+            'info' => $info,
+            'slug' => $slug]);
     }
 }
