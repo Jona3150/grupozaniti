@@ -160,17 +160,50 @@
         </div>
 
         <div class="filter-tabs">
-            <button class="tab" ng-class="{'active': filtroTipo == ''}" ng-click="filtroTipo = ''">Todos (@{{clientes.length}})</button>
-<!--             <button class="tab" ng-class="{'active': filtroTipo == 'Activo'}" ng-click="filtroTipo = 'Activo'">Activos</button> -->
-            <button class="tab" ng-class="{'active': filtroTipo == 'Residencial'}" ng-click="filtroTipo = 'Residencial'">Residencial</button>
-            <button class="tab" ng-class="{'active': filtroTipo == 'Comercial'}" ng-click="filtroTipo = 'Comercial'">Comercial</button>
-        </div>
+    <button class="tab" 
+            ng-class="{'active': filtroTipo == '' && filtroEstado == ''}" 
+            ng-click="filtroTipo = ''; filtroEstado = ''">
+        Todos (@{{clientes.length}})
+    </button>
+    
+    <button class="tab" 
+            ng-class="{'active': filtroEstado == 'Activo'}" 
+            ng-click="filtroEstado = (filtroEstado == 'Activo' ? '' : 'Activo')">
+        <i class="fas fa-check-circle"></i> Activos
+    </button>
+    
+    <button class="tab" 
+            ng-class="{'active': filtroEstado == 'Inactivo'}" 
+            ng-click="filtroEstado = (filtroEstado == 'Inactivo' ? '' : 'Inactivo')">
+        <i class="fas fa-times-circle"></i> Inactivos
+    </button>
+
+    <div style="width: 1px; background: #e2e8f0; margin: 0 10px;"></div>
+
+    <button class="tab" 
+            ng-class="{'active': filtroTipo == 'Residencial'}" 
+            ng-click="filtroTipo = (filtroTipo == 'Residencial' ? '' : 'Residencial')">
+        <i class="fas fa-home"></i> Residencial
+    </button>
+    
+    <button class="tab" 
+            ng-class="{'active': filtroTipo == 'Comercial'}" 
+            ng-click="filtroTipo = (filtroTipo == 'Comercial' ? '' : 'Comercial')">
+        <i class="fas fa-building"></i> Comercial
+    </button>
+</div>
 
         <div class="client-grid">
-            <div class="client-card" ng-repeat="c in clientes | filter:busqueda | filter:filtroTipo">
-                <span class="badge" ng-class="c.estado == 'Activo' ? 'badge-completado' : 'badge-pendiente'" style="position:absolute; right:20px; top:20px;">
-                    @{{c.estado}}
-                </span>
+            <div class="client-card" 
+     ng-repeat="c in clientes | filter:busqueda | filter:{tipo: filtroTipo || undefined, estado: filtroEstado || undefined}:true"
+     ng-style="c.estado == 'Inactivo' ? {'opacity': '0.7', 'background-color': '#f8fafc'} : {}">
+
+        <span class="badge" 
+              ng-class="c.estado == 'Activo' ? 'badge-completado' : 'badge-pendiente'" 
+              style="position:absolute; right:20px; top:20px;">
+            @{{c.estado}}
+        </span>
+        
                 <div class="client-header">
                     <div class="client-icon">
                         <i class="fas" ng-class="c.tipo == 'Comercial' ? 'fa-building' : 'fa-home'"></i>
@@ -187,10 +220,10 @@
                     <p><i class="fas fa-map-marker-alt"></i> @{{c.direccion}}</p>
                 </div>
 
-                <div class="client-stats">
+                <!-- <div class="client-stats">
                     <div><span>Servicios</span><strong>@{{c.servicios_realizados || 0}}</strong></div>
                     <div style="text-align:right;"><span>Última Visita</span><strong>@{{c.ultimo_servicio || 'Nunca'}}</strong></div>
-                </div>
+                </div> -->
 
                 <div style="margin-top: 20px; display: flex; gap: 15px; border-top: 1px solid #f8fafc; padding-top: 15px;">
                     <button ng-click="editarCliente(c)" style="background:none; border:none; color:var(--text-gray); cursor:pointer; font-weight:600; font-size: 0.85rem;"><i class="fas fa-edit"></i> Editar</button>

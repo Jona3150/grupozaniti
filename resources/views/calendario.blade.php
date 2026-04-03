@@ -89,37 +89,76 @@
         </header>
 
         <section class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-info"><span>Total del Mes</span><h2>@{{ servicios.length }}</h2></div>
-                <div class="icon-box cyan"><i class="fas fa-calendar-alt"></i></div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-info"><span>Programados</span><h2 style="color: #ecc94b;">@{{ (servicios | filter:{estado:'Programado'}).length }}</h2></div>
-                <div class="icon-box orange"><i class="fas fa-clock"></i></div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-info"><span>Completados</span><h2 style="color: #48bb78;">@{{ (servicios | filter:{estado:'Completado'}).length }}</h2></div>
-                <div class="icon-box green"><i class="fas fa-check-circle"></i></div>
-            </div>
-        </section>
+    <div class="metric-card">
+        <div class="metric-info">
+            <span>Total del Mes (@{{ nombresMeses[mesActual] }})</span>
+            <h2>@{{ serviciosDelMes.length }}</h2>
+        </div>
+        <div class="icon-box cyan">
+            <i class="fas fa-calendar-alt"></i>
+        </div>
+    </div>
+    
+    <div class="metric-card">
+        <div class="metric-info">
+            <span>Programados</span>
+            <h2 style="color: #ecc94b;">@{{ (serviciosDelMes | filter:{estado:'Programado'}).length }}</h2>
+        </div>
+        <div class="icon-box orange">
+            <i class="fas fa-clock"></i>
+        </div>
+    </div>
+    
+    <div class="metric-card">
+        <div class="metric-info">
+            <span>Completados</span>
+            <h2 style="color: #48bb78;">@{{ (serviciosDelMes | filter:{estado:'Completado'}).length }}</h2>
+        </div>
+        <div class="icon-box green">
+            <i class="fas fa-check-circle"></i>
+        </div>
+    </div>
+</section>
 
         <div class="calendar-container">
             <div class="calendar-box">
-                <div class="calendar-header"><h3>Marzo 2026</h3></div>
-                <div class="calendar-grid">
-                    <div class="day-name" ng-repeat="label in ['Do','Lu','Ma','Mi','Ju','Vi','Sá']">@{{label}}</div>
-                    <div class="calendar-day" 
-                         ng-repeat="d in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]"
-                         ng-class="{'active': diaSeleccionado == d, 'today': d == diaActual}"
-                         ng-click="seleccionarDia(d)">
-                        @{{d}}
-                    </div>
-                </div>
-            </div>
+    <div class="calendar-header">
+        <button ng-click="cambiarMes(-1)" style="border:none; background:none; cursor:pointer; color: var(--zaniti-cyan); font-size: 1.2rem;">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <h3 style="font-weight: 600;">
+            @{{ nombresMeses[mesActual] }} @{{ anioActual }}
+        </h3>
+        
+        <button ng-click="cambiarMes(1)" style="border:none; background:none; cursor:pointer; color: var(--zaniti-cyan); font-size: 1.2rem;">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <div class="calendar-grid">
+        <div class="day-name" ng-repeat="label in ['Do','Lu','Ma','Mi','Ju','Vi','Sá']">@{{label}}</div>
+        
+        <div class="calendar-day" 
+             ng-repeat="d in diasDelMes track by $index" 
+             ng-class="{
+                'active': diaSeleccionado == d, 
+                'today': (d == diaHoy && mesActual == mesHoy && anioActual == anioHoy),
+                'empty': d === null
+             }"
+             ng-click="d && seleccionarDia(d)">
+            @{{ d }}
+        </div>
+    </div>
+
+    <button class="btn-save" ng-click="abrirModal()" style="margin-top: 20px; width: 100%;">
+        <i class="fas fa-plus"></i> Agendar Nuevo Servicio
+    </button>
+</div>
 
             <div class="services-box">
                 <h3 style="margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">
-                    Servicios del @{{diaSeleccionado}} de Marzo
+                    Servicios @{{diaSeleccionado}} de @{{ nombresMeses[mesActual] }} del @{{ anioActual }}
                 </h3>
                 
                 <div ng-repeat="s in serviciosDelDia" class="service-card">

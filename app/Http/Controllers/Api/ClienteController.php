@@ -13,17 +13,16 @@ class ClienteController extends Controller
     /**
      * Listar clientes
      */
-    public function index()
-    {
+    public function index()    {
         try {
-            // Usamos el path completo del modelo para evitar errores de importación
+            // Obtenemos TODOS los clientes para poder gestionarlos en su vista
             $clientes = \App\Models\Cliente::orderBy('nombre', 'asc')->get();
             return response()->json($clientes);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             Log::error("Error en Zaniti Index: " . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
+        }    }
 
     /**
      * Guardar cliente
@@ -31,9 +30,9 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre'    => 'required|string|max:255',
-            'tipo'      => 'required|string',
-            'telefono'  => 'required|string',
+            'nombre' => 'required|string|max:255',
+            'tipo' => 'required|string',
+            'telefono' => 'required|string',
             'direccion' => 'required|string',
         ]);
 
@@ -43,7 +42,8 @@ class ClienteController extends Controller
                 'message' => 'Cliente guardado correctamente',
                 'cliente' => $cliente
             ], 201);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             Log::error("Error en Zaniti Store: " . $e->getMessage());
             return response()->json([
                 'message' => 'Error en el servidor',
@@ -61,7 +61,8 @@ class ClienteController extends Controller
             $cliente = \App\Models\Cliente::findOrFail($id);
             $cliente->update($request->all());
             return response()->json(['message' => 'Actualizado con éxito', 'cliente' => $cliente]);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -74,7 +75,8 @@ class ClienteController extends Controller
         try {
             \App\Models\Cliente::destroy($id);
             return response()->json(['message' => 'Eliminado correctamente']);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

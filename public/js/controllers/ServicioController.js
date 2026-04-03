@@ -1,189 +1,198 @@
 /**
  * Controlador de AngularJS para el Calendario de Servicios - Zaniti
+ * Versión: Navegación Dinámica + Métricas filtradas por mes en curso
  */
 zanitiApp.controller('ServicioController', ['$scope', '$http', function ($scope, $http) {
 
-    // --- Variables de Estado ---
-    $scope.servicios = [];       // Lista completa de servicios
-    $scope.serviciosDelDia = [];  // Lista filtrada para la derecha
+    // --- 1. Variables de Estado ---
+    $scope.servicios = [];           // Lista maestra de la base de datos
+    $scope.serviciosDelMes = [];      // NUEVO: Lista filtrada para las métricas (cards de arriba)
+    $scope.serviciosDelDia = [];      // Lista filtrada para el panel derecho
     $scope.clientes = [];
-    $scope.tecnicos = [];        // Sincronizado con el backend (Sonia, Fernando, Víctor)
-    $scope.cargando = true;
+    $scope.tecnicos = [];
     $scope.mostrarModal = false;
     $scope.editando = false;
     $scope.nuevoServicio = {};
+    $scope.guardando = false;
 
-    // Control visual del calendario
-    $scope.diaSeleccionado = new Date().getDate();
-    $scope.diaActual = new Date().getDate();
+    // --- 2. Lógica Dinámica de Fecha ---
+    let hoy = new Date();
+    $scope.mesActual = hoy.getMonth();
+    $scope.anioActual = hoy.getFullYear();
+    $scope.diaSeleccionado = hoy.getDate();
+
+    $scope.diaHoy = hoy.getDate();
+    $scope.mesHoy = hoy.getMonth();
+    $scope.anioHoy = hoy.getFullYear();
+
+    $scope.nombresMeses = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
 
     /**
-     * 1. Inicialización
+     * 3. Generar el Grid del Calendario
      */
-    $scope.init = function () {
-        $scope.obtenerDatos();
-        $scope.obtenerClientes();
-    };
+    $scope.generarCalendario = function () {
+        $scope.diasDelMes = [];
+        let primerDiaSemana = new Date($scope.anioActual, $scope.mesActual, 1).getDay();
+        let totalDias = new Date($scope.anioActual, $scope.mesActual + 1, 0).getDate();
 
-    // Obtiene servicios y técnicos desde Laravel
-    $scope.obtenerDatos = function () {
-        $scope.cargando = true;
-        $http.get('/datos-servicios').then(function (response) {
-            $scope.servicios = response.data.servicios || [];
-            // IMPORTANTE: Aquí asignamos los técnicos que vienen de la tabla Users
-            $scope.tecnicos = response.data.tecnicos || [];
-
-            $scope.actualizarFiltroDia();
-            $scope.cargando = false;
-        }, function (error) {
-            console.error("Error al cargar datos:", error);
-            $scope.cargando = false;
-        });
-    };
-
-    $scope.obtenerClientes = function () {
-        $http.get('/datos-clientes').then(function (response) {
-            $scope.clientes = response.data;
-        });
+        for (let i = 0; i < primerDiaSemana; i++) $scope.diasDelMes.push(null);
+        for (let d = 1; d <= totalDias; d++) $scope.diasDelMes.push(d);
     };
 
     /**
-     * 2. Lógica del Calendario
+     * 4. Navegación y Filtros (CORRECCIÓN MÉTRICAS POR MES)
      */
-    $scope.seleccionarDia = function (dia) {
-        $scope.diaSeleccionado = dia;
-        $scope.actualizarFiltroDia();
-    };
+    $scope.actualizarFiltrosGlobales = function () {
+        // Formato para comparar mes y año (YYYY-MM)
+        let m = ($scope.mesActual + 1).toString().padStart(2, '0');
+        let prefijoMes = `${$scope.anioActual}-${m}`;
 
-    $scope.actualizarFiltroDia = function () {
-        let mes = "03"; // Marzo 2026
-        let diaStr = $scope.diaSeleccionado < 10 ? '0' + $scope.diaSeleccionado : $scope.diaSeleccionado;
-        let fechaBusqueda = `2026-${mes}-${diaStr}`;
+        // 1. Filtrar para las métricas del mes (Cards superiores)
+        $scope.serviciosDelMes = $scope.servicios.filter(function (s) {
+            return s.fecha.startsWith(prefijoMes);
+        });
+
+        // 2. Filtrar para el panel derecho (Día seleccionado)
+        let d = $scope.diaSeleccionado.toString().padStart(2, '0');
+        let fechaBusqueda = `${prefijoMes}-${d}`;
 
         $scope.serviciosDelDia = $scope.servicios.filter(function (s) {
-            // Limpiamos la fecha por si viene con hora de la DB
-            let fechaServicio = s.fecha.split('T')[0];
-            return fechaServicio === fechaBusqueda;
+            let fechaLimpia = s.fecha.split('T')[0].split(' ')[0];
+            return fechaLimpia === fechaBusqueda;
         });
     };
 
+    $scope.cambiarMes = function (direccion) {
+        $scope.mesActual += direccion;
+        if ($scope.mesActual > 11) {
+            $scope.mesActual = 0;
+            $scope.anioActual++;
+        } else if ($scope.mesActual < 0) {
+            $scope.mesActual = 11;
+            $scope.anioActual--;
+        }
+        $scope.generarCalendario();
+        $scope.seleccionarDia(1);
+    };
+
+    $scope.seleccionarDia = function (dia) {
+        if (!dia) return;
+        $scope.diaSeleccionado = dia;
+        $scope.actualizarFiltrosGlobales();
+    };
+
     /**
-     * 3. Control del Modal (Solución al error datefmt)
+     * 5. CRUD: Obtener, Guardar, Editar y Eliminar
+     */
+    $scope.obtenerDatos = function () {
+        $http.get('/datos-servicios').then(function (response) {
+            $scope.servicios = response.data.servicios || [];
+            $scope.tecnicos = response.data.tecnicos || [];
+            $scope.actualizarFiltrosGlobales();
+        });
+
+        $http.get('/datos-clientes').then(function (response) {
+            let todosLosClientes = response.data || [];
+
+            // Solo guardamos los activos para que el modal de agendar esté limpio
+            $scope.clientes = todosLosClientes.filter(function (c) {
+                return c.estado === 'Activo';
+            });
+        }).catch(function (err) {
+            console.error("Error cargando clientes:", err);
+        });
+    };
+
+    $scope.guardarServicio = function () {
+        if (!$scope.nuevoServicio.cliente || !$scope.nuevoServicio.direccion) {
+            alert("Campos obligatorios incompletos.");
+            return;
+        }
+
+        $scope.guardando = true;
+        let payload = angular.copy($scope.nuevoServicio);
+
+        if (payload.tipo_servicio === 'Otro') {
+            payload.tipo_servicio = payload.tipo_otro;
+        }
+
+        if (payload.fecha instanceof Date) {
+            let mon = (payload.fecha.getMonth() + 1).toString().padStart(2, '0');
+            let day = payload.fecha.getDate().toString().padStart(2, '0');
+            payload.fecha = `${payload.fecha.getFullYear()}-${mon}-${day}`;
+        }
+
+        if (payload.hora instanceof Date) {
+            let h = payload.hora.getHours().toString().padStart(2, '0');
+            let i = payload.hora.getMinutes().toString().padStart(2, '0');
+            payload.hora = `${h}:${i}:00`;
+        }
+
+        let url = $scope.editando ? '/servicios/actualizar/' + payload.id : '/servicios/guardar';
+
+        $http.post(url, payload).then(function (response) {
+            $scope.obtenerDatos();
+            $scope.cerrarModal();
+        }, function (error) {
+            alert("Error al guardar: " + (error.data.message || "Error de servidor"));
+        }).finally(function () {
+            $scope.guardando = false;
+        });
+    };
+
+    $scope.eliminarServicio = function (id) {
+        if (confirm("¿Seguro que deseas cancelar este servicio?")) {
+            $http.post('/servicios/eliminar/' + id).then(() => $scope.obtenerDatos());
+        }
+    };
+
+    /**
+     * 6. Gestión de Modales
      */
     $scope.abrirModal = function () {
         $scope.editando = false;
-
-        // CORRECCIÓN: Usamos objetos Date reales para evitar el error [ngModel:datefmt]
-        let fechaParaModal = new Date(2026, 2, $scope.diaSeleccionado); // Mes 2 = Marzo
-        let horaPredeterminada = new Date();
-        horaPredeterminada.setHours(9, 0, 0, 0);
+        let f = new Date($scope.anioActual, $scope.mesActual, $scope.diaSeleccionado, 12, 0, 0);
+        let h = new Date();
+        h.setHours(10, 0, 0, 0);
 
         $scope.nuevoServicio = {
-            fecha: fechaParaModal,
-            hora: horaPredeterminada,
+            fecha: f,
+            hora: h,
             estado: 'Programado',
             tipo_servicio: 'Fumigación Residencial'
         };
         $scope.mostrarModal = true;
     };
 
-    $scope.cerrarModal = function () {
-        $scope.mostrarModal = false;
-        $scope.nuevoServicio = {};
-    };
-
-    /**
-     * 4. Guardar o Actualizar
-     */
-    $scope.guardarServicio = function () {
-        // 1. Evitar múltiples clics si ya se está procesando
-        if ($scope.guardando) return;
-
-        if (!$scope.nuevoServicio.cliente || !$scope.nuevoServicio.tecnico || !$scope.nuevoServicio.direccion) {
-            alert("Por favor, completa Cliente, Técnico y Dirección.");
-            return;
-        }
-
-        // 2. Bloqueamos el proceso
-        $scope.guardando = true;
-
-        // Preparamos los datos para Laravel (convertimos Date a String)
-        let datosAEnviar = angular.copy($scope.nuevoServicio);
-
-        if (datosAEnviar.fecha instanceof Date) {
-            datosAEnviar.fecha = datosAEnviar.fecha.toISOString().split('T')[0];
-        }
-        if (datosAEnviar.hora instanceof Date) {
-            datosAEnviar.hora = datosAEnviar.hora.getHours().toString().padStart(2, '0') + ':' +
-                datosAEnviar.hora.getMinutes().toString().padStart(2, '0');
-        }
-
-        let url = $scope.editando ? '/servicios/actualizar/' + datosAEnviar.id : '/servicios/guardar';
-
-        $http.post(url, datosAEnviar).then(function (response) {
-            $scope.obtenerDatos();
-            $scope.cerrarModal();
-            alert("¡Servicio guardado con éxito!");
-        }, function (error) {
-            console.error("Error al guardar:", error);
-            alert("No se pudo guardar. Verifica que todos los campos estén llenos.");
-        }).finally(function () {
-            // 3. Pase lo que pase (éxito o error), liberamos el botón al terminar
-            $scope.guardando = false;
-        });
-    };
-
-    /**
-     * 5. Editar y Eliminar
-     */
     $scope.editarServicio = function (servicio) {
         $scope.editando = true;
         let clon = angular.copy(servicio);
 
-        // 1. Obtener la fecha de hoy en formato Date de JS
-        let hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
-
-        // 2. Corregir la Fecha
         if (clon.fecha) {
-            // Usamos el reemplazo de guiones por barras para evitar el error de "un día menos"
-            // y creamos el objeto Date directamente.
-            let fechaConvertida = new Date(clon.fecha.replace(/-/g, '\/'));
-
-            // Si la fecha es válida, la asignamos; si no, ponemos la de hoy
-            $scope.nuevoServicio_fecha = (isNaN(fechaConvertida.getTime())) ? hoy : fechaConvertida;
-        } else {
-            $scope.nuevoServicio_fecha = hoy;
+            let parts = clon.fecha.split('T')[0].split(' ')[0].split('-');
+            clon.fecha = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
         }
-
-        // 3. Corregir la Hora
         if (clon.hora) {
-            let parts = clon.hora.split(':');
+            let t = clon.hora.split(':');
             let h = new Date();
-            h.setHours(parseInt(parts[0]), parseInt(parts[1]), 0, 0);
-            clon.hora = h;
-        } else {
-            // Si no hay hora, podemos poner la hora actual por defecto
-            let h = new Date();
-            h.setSeconds(0);
-            h.setMilliseconds(0);
+            h.setHours(t[0], t[1], 0, 0);
             clon.hora = h;
         }
-
-        // 4. Asignar la fecha corregida al objeto que usa el modal
-        clon.fecha = $scope.nuevoServicio_fecha;
 
         $scope.nuevoServicio = clon;
         $scope.mostrarModal = true;
     };
 
-    $scope.eliminarServicio = function (id) {
-        if (confirm("¿Eliminar este servicio?")) {
-            $http.post('/servicios/eliminar/' + id).then(function () {
-                $scope.obtenerDatos();
-            });
-        }
+    $scope.cerrarModal = function () {
+        $scope.mostrarModal = false;
+        $scope.editando = false;
     };
 
-    $scope.init();
+    // Inicialización
+    $scope.generarCalendario();
+    $scope.obtenerDatos();
+
 }]);

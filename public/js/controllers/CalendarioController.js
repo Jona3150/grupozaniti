@@ -1,13 +1,13 @@
 /**
  * Controlador de AngularJS para el Calendario de Servicios - Zaniti
  */
-zanitiApp.controller('CalendarioController', ['$scope', '$http', function($scope, $http) {
-    
+zanitiApp.controller('CalendarioController', ['$scope', '$http', function ($scope, $http) {
+
     // --- Variables de Estado ---
     $scope.servicios = [];
     $scope.serviciosDelDia = [];
     $scope.empleados = [];
-    $scope.diaSeleccionado = new Date().getDate(); 
+    $scope.diaSeleccionado = new Date().getDate();
     $scope.mostrarModal = false;
     $scope.editando = false;
     $scope.nuevoServicio = {};
@@ -15,12 +15,12 @@ zanitiApp.controller('CalendarioController', ['$scope', '$http', function($scope
     /**
      * 1. Carga de Datos
      */
-    $scope.obtenerDatos = function() {
-        $http.get('/datos-servicios').then(function(response) {
+    $scope.obtenerDatos = function () {
+        $http.get('/datos-servicios').then(function (response) {
             $scope.servicios = response.data.servicios;
             $scope.empleados = response.data.empleados;
             $scope.filtrarPorDia($scope.diaSeleccionado);
-        }, function(error) {
+        }, function (error) {
             console.error("Error al cargar servicios:", error);
         });
     };
@@ -28,10 +28,10 @@ zanitiApp.controller('CalendarioController', ['$scope', '$http', function($scope
     /**
      * 2. Lógica de Autocompletado (TAB / Doble Clic)
      */
-    $scope.autocompletarCliente = function() {
+    $scope.autocompletarCliente = function () {
         if (!$scope.nuevoServicio.cliente || $scope.nuevoServicio.cliente.length < 2) return;
-        
-        let coincidencia = $scope.servicios.find(s => 
+
+        let coincidencia = $scope.servicios.find(s =>
             s.cliente.toLowerCase().includes($scope.nuevoServicio.cliente.toLowerCase())
         );
 
@@ -46,14 +46,14 @@ zanitiApp.controller('CalendarioController', ['$scope', '$http', function($scope
     /**
      * 3. Gestión del Calendario
      */
-    $scope.seleccionarDia = function(dia) {
+    $scope.seleccionarDia = function (dia) {
         $scope.diaSeleccionado = dia;
         $scope.filtrarPorDia(dia);
     };
 
-    $scope.filtrarPorDia = function(dia) {
+    $scope.filtrarPorDia = function (dia) {
         let diaStr = dia.toString().padStart(2, '0');
-        // Filtramos por el mes actual (Marzo 2026 según tu configuración)
+        // Filtramos por el mes actual 
         let fechaBusqueda = "2026-03-" + diaStr;
         $scope.serviciosDelDia = $scope.servicios.filter(s => s.fecha.includes(fechaBusqueda));
     };
@@ -61,7 +61,7 @@ zanitiApp.controller('CalendarioController', ['$scope', '$http', function($scope
     /**
      * 4. Guardar Servicio (Con lógica de campo "Otro")
      */
-    $scope.guardarServicio = function() {
+    $scope.guardarServicio = function () {
         if (!$scope.nuevoServicio.cliente || !$scope.nuevoServicio.direccion) {
             alert("Campos obligatorios incompletos (Cliente y Dirección).");
             return;
@@ -95,10 +95,10 @@ zanitiApp.controller('CalendarioController', ['$scope', '$http', function($scope
 
         let url = $scope.editando ? '/servicios/actualizar/' + payload.id : '/servicios/guardar';
 
-        $http.post(url, payload).then(function(response) {
+        $http.post(url, payload).then(function (response) {
             $scope.obtenerDatos(); // Recargar para ver los cambios
             $scope.cerrarModal();
-        }, function(error) {
+        }, function (error) {
             console.error("Error al guardar:", error.data);
             alert("Error al guardar: " + (error.data.message || "Error de servidor"));
         });
@@ -107,10 +107,10 @@ zanitiApp.controller('CalendarioController', ['$scope', '$http', function($scope
     /**
      * 5. Control de Modales
      */
-    $scope.abrirModal = function() {
+    $scope.abrirModal = function () {
         $scope.editando = false;
         let diaStr = $scope.diaSeleccionado.toString().padStart(2, '0');
-        
+
         $scope.nuevoServicio = {
             fecha: new Date(`2026-03-${diaStr}T12:00:00`),
             hora: new Date(2026, 2, $scope.diaSeleccionado, 10, 0, 0),
@@ -120,25 +120,25 @@ zanitiApp.controller('CalendarioController', ['$scope', '$http', function($scope
         $scope.mostrarModal = true;
     };
 
-    $scope.editarServicio = function(servicio) {
+    $scope.editarServicio = function (servicio) {
         $scope.editando = true;
         $scope.nuevoServicio = angular.copy(servicio);
-        
+
         // Convertir strings de BD a objetos Date para los inputs
         $scope.nuevoServicio.fecha = new Date(servicio.fecha + "T12:00:00");
         let h = servicio.hora.split(':');
         $scope.nuevoServicio.hora = new Date(2026, 2, 1, h[0], h[1], 0);
-        
+
         $scope.mostrarModal = true;
     };
 
-    $scope.cerrarModal = function() {
+    $scope.cerrarModal = function () {
         $scope.mostrarModal = false;
         $scope.nuevoServicio = {};
         $scope.editando = false;
     };
 
-    $scope.eliminarServicio = function(id) {
+    $scope.eliminarServicio = function (id) {
         if (confirm("¿Seguro que deseas cancelar este servicio de forma permanente?")) {
             $http.post('/servicios/eliminar/' + id).then(() => {
                 $scope.obtenerDatos();
