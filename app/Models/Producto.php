@@ -11,13 +11,11 @@ class Producto extends Model
 
     /**
      * La tabla asociada al modelo.
-     * Por defecto Laravel busca "productos", pero lo aseguramos aquí.
      */
     protected $table = 'productos';
 
     /**
      * Los atributos que se pueden asignar de forma masiva.
-     * Basado exactamente en el esquema que subiste.
      */
     protected $fillable = [
         'nombre',
