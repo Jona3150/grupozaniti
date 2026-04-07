@@ -7,7 +7,6 @@
   <h2>Solicita tu cotización</h2>
   <p>Completa el siguiente formulario para que nuestro equipo pueda darte un presupuesto exacto para tu servicio.</p>
 
-  {{-- Alerta de éxito: Muestra el cálculo del controlador si la validación pasó --}}
   @if(session('success'))
     <div style="background: #d1ecf1; color: #0c5460; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #bee5eb;">
       <strong>Estimación lista:</strong> {{ session('success') }}
@@ -15,13 +14,20 @@
   @endif
 
   <div class="cotizacion-form-card">
-    {{-- El atributo enctype es vital para permitir la subida de imágenes --}}
     <form id="cotizacionForm" enctype="multipart/form-data" method="POST" action="{{ route('cotizacion.enviar') }}">
       @csrf
       
       <div class="form-group">
         <label for="name">Nombre completo</label>
-        <input type="text" id="name" name="name" value="{{ old('name') }}" required>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          value="{{ old('name') }}" 
+          pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+" 
+          title="Solo letras" 
+          required
+        >
         @error('name') <small style="color: #e3342f;">{{ $message }}</small> @enderror
       </div>
 
@@ -33,7 +39,15 @@
 
       <div class="form-group">
         <label for="phone">Número de teléfono</label>
-        <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required>
+        <input 
+          type="tel" 
+          id="phone" 
+          name="phone" 
+          value="{{ old('phone') }}" 
+          pattern="[0-9]+" 
+          title="Solo números" 
+          required
+        >
         @error('phone') <small style="color: #e3342f;">{{ $message }}</small> @enderror
       </div>
 
@@ -50,7 +64,6 @@
         </select>
       </div>
 
-      {{-- Lógica para mostrar el campo de plaga si hubo un error de validación previo y el servicio era 'plagas' --}}
       <div class="form-group" id="plaga-group" style="display: {{ old('service') == 'plagas' ? 'block' : 'none' }};">
         <label for="plaga">¿Qué plaga deseas controlar?</label>
         <input type="text" id="plaga" name="plaga" value="{{ old('plaga') }}" placeholder="Ej. cucarachas, hormigas, ratas, etc.">
@@ -82,12 +95,20 @@
       </div>
 
       <button type="submit" class="btn-submit">Solicitar cotización</button>
+
     </form>
   </div>
 </section>
 @endsection
 
 @section('scripts')
-  {{-- Cargamos el JS que maneja la vista previa y el toggle del select --}}
-  <script src="{{ asset('js/cotizacion.js') }}"></script>
+<script>
+document.getElementById("cotizacionForm").addEventListener("submit", function() {
+    const boton = this.querySelector("button[type='submit']");
+    boton.disabled = true;
+    boton.innerText = "Enviando...";
+});
+</script>
+
+<script src="{{ asset('js/cotizacion.js') }}"></script>
 @endsection
