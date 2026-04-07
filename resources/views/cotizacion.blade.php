@@ -24,8 +24,6 @@
           id="name" 
           name="name" 
           value="{{ old('name') }}" 
-          pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+" 
-          title="Solo letras" 
           required
         >
         @error('name') <small style="color: #e3342f;">{{ $message }}</small> @enderror
@@ -44,8 +42,6 @@
           id="phone" 
           name="phone" 
           value="{{ old('phone') }}" 
-          pattern="[0-9]+" 
-          title="Solo números" 
           required
         >
         @error('phone') <small style="color: #e3342f;">{{ $message }}</small> @enderror
@@ -103,12 +99,40 @@
 
 @section('scripts')
 <script>
-document.getElementById("cotizacionForm").addEventListener("submit", function() {
-    const boton = this.querySelector("button[type='submit']");
-    boton.disabled = true;
-    boton.innerText = "Enviando...";
+document.addEventListener("DOMContentLoaded", function() {
+
+    const form = document.getElementById("cotizacionForm");
+    const nombre = document.getElementById("name");
+    const telefono = document.getElementById("phone");
+    const boton = form.querySelector("button[type='submit']");
+    const servicio = document.getElementById("service");
+    const plagaGroup = document.getElementById("plaga-group");
+
+    // Validación nombre (solo letras)
+    nombre.addEventListener("input", function() {
+        this.value = this.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúñÑ\s]/g, '');
+    });
+
+    // Validación teléfono (solo números)
+    telefono.addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    // Mostrar campo plaga dinámicamente
+    servicio.addEventListener("change", function() {
+        if (this.value === "plagas") {
+            plagaGroup.style.display = "block";
+        } else {
+            plagaGroup.style.display = "none";
+        }
+    });
+
+    // Evitar múltiples envíos
+    form.addEventListener("submit", function() {
+        boton.disabled = true;
+        boton.innerText = "Enviando...";
+    });
+
 });
 </script>
-
-<script src="{{ asset('js/cotizacion.js') }}"></script>
 @endsection
