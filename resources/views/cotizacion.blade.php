@@ -7,7 +7,6 @@
   <h2>Solicita tu cotización</h2>
   <p>Completa el siguiente formulario para que nuestro equipo pueda darte un presupuesto exacto para tu servicio.</p>
 
-  {{-- Alerta de éxito: Muestra el cálculo del controlador si la validación pasó --}}
   @if(session('success'))
     <div style="background: #d1ecf1; color: #0c5460; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #bee5eb;">
       <strong>Estimación lista:</strong> {{ session('success') }}
@@ -15,13 +14,18 @@
   @endif
 
   <div class="cotizacion-form-card">
-    {{-- El atributo enctype es vital para permitir la subida de imágenes --}}
     <form id="cotizacionForm" enctype="multipart/form-data" method="POST" action="{{ route('cotizacion.enviar') }}">
       @csrf
       
       <div class="form-group">
         <label for="name">Nombre completo</label>
-        <input type="text" id="name" name="name" value="{{ old('name') }}" required>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          value="{{ old('name') }}" 
+          required
+        >
         @error('name') <small style="color: #e3342f;">{{ $message }}</small> @enderror
       </div>
 
@@ -33,7 +37,13 @@
 
       <div class="form-group">
         <label for="phone">Número de teléfono</label>
-        <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required>
+        <input 
+          type="tel" 
+          id="phone" 
+          name="phone" 
+          value="{{ old('phone') }}" 
+          required
+        >
         @error('phone') <small style="color: #e3342f;">{{ $message }}</small> @enderror
       </div>
 
@@ -50,7 +60,6 @@
         </select>
       </div>
 
-      {{-- Lógica para mostrar el campo de plaga si hubo un error de validación previo y el servicio era 'plagas' --}}
       <div class="form-group" id="plaga-group" style="display: {{ old('service') == 'plagas' ? 'block' : 'none' }};">
         <label for="plaga">¿Qué plaga deseas controlar?</label>
         <input type="text" id="plaga" name="plaga" value="{{ old('plaga') }}" placeholder="Ej. cucarachas, hormigas, ratas, etc.">
@@ -82,12 +91,48 @@
       </div>
 
       <button type="submit" class="btn-submit">Solicitar cotización</button>
+
     </form>
   </div>
 </section>
 @endsection
 
 @section('scripts')
-  {{-- Cargamos el JS que maneja la vista previa y el toggle del select --}}
-  <script src="{{ asset('js/cotizacion.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const form = document.getElementById("cotizacionForm");
+    const nombre = document.getElementById("name");
+    const telefono = document.getElementById("phone");
+    const boton = form.querySelector("button[type='submit']");
+    const servicio = document.getElementById("service");
+    const plagaGroup = document.getElementById("plaga-group");
+
+    // Validación nombre (solo letras)
+    nombre.addEventListener("input", function() {
+        this.value = this.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúñÑ\s]/g, '');
+    });
+
+    // Validación teléfono (solo números)
+    telefono.addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    // Mostrar campo plaga dinámicamente
+    servicio.addEventListener("change", function() {
+        if (this.value === "plagas") {
+            plagaGroup.style.display = "block";
+        } else {
+            plagaGroup.style.display = "none";
+        }
+    });
+
+    // Evitar múltiples envíos
+    form.addEventListener("submit", function() {
+        boton.disabled = true;
+        boton.innerText = "Enviando...";
+    });
+
+});
+</script>
 @endsection
