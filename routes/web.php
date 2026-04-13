@@ -76,7 +76,7 @@ Route::post('/logout', function (Request $request) {
 // --- RUTAS PROTEGIDAS (Requieren Iniciar Sesión) ---
 // Todo lo que esté dentro de este grupo pide autenticación.
 
-Route::middleware(['auth'])->group(function () {
+//Route::middleware(['auth'])->group(function () {
 
     // --- DASHBOARD Y GENERALES ---
     Route::get('/dashboard', function () {
@@ -137,4 +137,4 @@ Route::middleware(['auth'])->group(function () {
 
         // Esta ruta atrapará /servicios/plagas, /servicios/venta, etc.        
         Route::get('/servicios/{slug}', [ServicioController::class , 'show'])->name('servicios.show');
-    });
+    //});
