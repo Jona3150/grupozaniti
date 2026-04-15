@@ -11,7 +11,24 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        
+        // Excluir todas las rutas de productos del CSRF para pruebas externas
+        $middleware->validateCsrfTokens(except: [
+            'productos/guardar',
+            'productos/actualizar/*',
+            'productos/eliminar/*',
+        ]);
+
+        // Mantener la protección contra el retroceso en el historial
+        $middleware->web(append: [
+            \App\Http\Middleware\PreventBackHistory::class,
+        ]);
+
+        
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

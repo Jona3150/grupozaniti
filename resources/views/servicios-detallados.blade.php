@@ -406,9 +406,7 @@
         </ul>
 
         <div class="service-highlight">
-          En <strong>Zaniti</strong>, nuestro equipo de expertos está altamente capacitado
-          para ofrecerte un servicio de calidad, garantizando un ambiente limpio
-          y seguro bajo los más altos estándares profesionales.
+          {{ $info['desc'] }}
         </div>
       </div>
 
@@ -431,10 +429,6 @@
             <div>Respuesta rápida con orientación clara y profesional.</div>
           </div>
 
-          <div class="service-mini-point">
-            <span>✓</span>
-            <div>Soluciones enfocadas en limpieza, seguridad y confianza.</div>
-          </div>
         </div>
 
         <a href="{{ url('/cotizacion?servicio=' . $slug) }}" class="btn-primary">

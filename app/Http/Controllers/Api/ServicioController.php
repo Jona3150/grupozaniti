@@ -11,16 +11,16 @@ use Illuminate\Support\Facades\Log;
 class ServicioController extends Controller
 {
     /**
-     * Obtener servicios y lista de técnicos (Sonia, Fernando, Víctor)
+     * Obtener servicios y lista de técnicos
      */
     public function index()
     {
         try {
             return response()->json([
-                // Obtenemos todos los servicios de la nueva tabla
+                // Obtener todos los servicios de la nueva tabla
                 'servicios' => Servicio::orderBy('fecha', 'asc')->orderBy('hora', 'asc')->get(),
 
-                // Obtenemos los técnicos de la tabla USERS (donde los creamos con Tinker)
+                // Obtener los técnicos de la tabla USERS
                 'tecnicos' => User::whereIn('role', ['admin', 'empleado', 'dueño'])
                 ->select('id', 'name', 'role')
                 ->get()
@@ -37,7 +37,6 @@ class ServicioController extends Controller
      */
     public function store(Request $request)
     {
-        // Validamos según la nueva estructura de la tabla servicios
         $validatedData = $request->validate([
             'fecha' => 'required|date',
             'hora' => 'required',

@@ -11,15 +11,17 @@ class ServicioController extends Controller
         $servicios_info = [
 
             'plagas' => [
-                'titulo' => 'Control y prevención de plagas',
-                'descripcion' => 'Diagnóstico, aplicación y seguimiento para eliminar y prevenir infestaciones con productos originales.',
+                'titulo' => 'Manejo Integrado de Plagas',
+                'descripcion' => 'Control y prevención de plagas.',
                 'incluye' => [
-                    'Diagnóstico profesional',
-                    'Aplicación de productos seguros',
-                    'Seguimiento preventivo'
+                    'Inspección  Tratamiento y Evaluación.',
+                    'Identificación',
+                    'Recomendación,',
+                    'Tratamiento,',
+                    'Evaluación.'
                 ],
                 'hero' => 'img/plagas-hero.png',
-
+                'desc' => 'En Zaniti nuestro equipo está altamente capacitado para ofrecerte un servicio de calidad, apegándonos a las normas y necesidades de cada uno de nuestros clientes.',
                 'galeria' => [
                     'img/plagas1.jpg',
                     'img/plagas2.jpg',
@@ -29,14 +31,15 @@ class ServicioController extends Controller
 
             'desinfeccion' => [
                 'titulo' => 'Desinfección de espacios',
-                'descripcion' => 'Procesos meticulosos con insumos biodegradables y seguros mediante termo nebulización.',
+                'descripcion' => 'Procesos meticulosos y detallados para la desinfección de superficies y purificación de ambientes.',
                 'incluye' => [
-                    'Sanitización profunda',
-                    'Insumos biodegradables',
-                    'Personal certificado'
+                    'Desinfección de superficies con productos 100% biodegradables, no tóxicos para eliminar virus, bacterias y hongos.',
+                    'Servicio en 3 etapas: Aspersión, Termonebulización y Aerosoles desinfectantes.'
                 ],
-                'hero' => 'img/foto1.jpg',
-
+                'hero' => 'img/Desinfeccion.png',
+                'desc' => 'En Zaniti, nuestro equipo de expertos está altamente capacitado
+          para ofrecerte un servicio de calidad, garantizando un ambiente limpio
+          y seguro, bajo los más altos estándares profesionales.',
                 'galeria' => [
                     'img/desinfeccion1.png',
                     'img/desinfeccion2.png',
@@ -50,12 +53,12 @@ class ServicioController extends Controller
                 'incluye' => [
                     'Limpieza profunda de áreas comunes',
                     'Limpieza de pisos, muebles y superficies',
-                    'Recolección de residuos',
-                    'Limpieza de sanitarios',
-                    'Mantenimiento básico de áreas'
+                    'Limpieza de sanitarios'
                 ],
                 'hero' => 'img/plagas-hero.png',
-
+                'desc' => 'En Zaniti, nuestro equipo de expertos está altamente capacitado
+          para ofrecerte un servicio de calidad, garantizando un ambiente limpio
+          y seguro, bajo los más altos estándares profesionales.',
                 'galeria' => [
                     'img/limpieza1.png',
                     'img/plagas3.jpg',
@@ -64,16 +67,16 @@ class ServicioController extends Controller
             ],
 
             'mantenimiento' => [
-                'titulo' => 'Mantenimiento en general',
-                'descripcion' => 'Servicio de mantenimiento preventivo y correctivo para diferentes instalaciones.',
+                'titulo' => 'Mantenimiento',
+                'descripcion' => 'Servicio de mantenimiento básico para diferentes instalaciones.',
                 'incluye' => [
-                    'Revisión general de instalaciones',
-                    'Reparaciones menores',
-                    'Ajustes y mantenimiento preventivo',
-                    'Diagnóstico de fallas'
+                    'Pintura',
+                    'Resane de superficies',
+                    'étodos mecánicos para ayudar al control de plagas',
+                    'Luminaria'
                 ],
                 'hero' => 'img/foto1.jpg',
-
+                'desc' => '',
                 'galeria' => [
                     'img/plagas-hero.png',
                     'img/mantenimiento2.png',
@@ -82,16 +85,14 @@ class ServicioController extends Controller
             ],
 
             'venta' => [
-                'titulo' => 'Venta de equipos y refacciones',
-                'descripcion' => 'Venta de equipos y refacciones especializadas para limpieza y control de plagas.',
+                'titulo' => 'Venta de maquinaria y equipo',
+                'descripcion' => 'Venta de maquinaria y equipo para limpieza, desinfección y control de plagas.',
                 'incluye' => [
-                    'Equipos especializados',
-                    'Refacciones originales',
-                    'Productos certificados',
+                    'Venta de equipos para diferentes necesidades',
                     'Asesoría técnica'
                 ],
                 'hero' => 'img/equipos.png',
-
+                'desc' => '',
                 'galeria' => [
                     'img/equipos1.png',
                     'img/equipos2.png',
@@ -100,16 +101,33 @@ class ServicioController extends Controller
             ],
 
             'reparacion' => [
-                'titulo' => 'Reparación de equipos',
-                'descripcion' => 'Servicio técnico especializado para reparación y mantenimiento de equipos.',
+                'titulo' => 'Reparación de equipos y venta de refacciones',
+                'descripcion' => 'Reparación de equipos y venta de refacciones',
                 'incluye' => [
                     'Diagnóstico técnico',
                     'Reparación de equipos',
                     'Cambio de refacciones',
-                    'Mantenimiento preventivo'
+                    'Mantenimiento preventivo',
+                    'Venta de refacciones para nuestros equipos.'
                 ],
                 'hero' => 'img/reparacion.png',
+                'desc' => '',
+                'galeria' => [
+                    'img/reparacion1.png',
+                    'img/reparacion2.png',
+                    'img/reparacion3.png'
+                ]
+            ],
 
+            'ventas' => [
+                'titulo' => 'Venta de productos para fumigación',
+                'descripcion' => 'Productos 100% originales con registros COFEPRIS vigentes.',
+                'incluye' => [
+                    'Asesoria y orientacion',
+                    'Variedad de productos'
+                ],
+                'hero' => 'img/reparacion.png',
+                'desc' => '',
                 'galeria' => [
                     'img/reparacion1.png',
                     'img/reparacion2.png',

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cliente; // Asegúrate de que el modelo esté en app/Models/Cliente.php
+use App\Models\Cliente; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Exception;
@@ -15,7 +15,7 @@ class ClienteController extends Controller
      */
     public function index()    {
         try {
-            // Obtenemos TODOS los clientes para poder gestionarlos en su vista
+            // Obtener TODOS los clientes para poder gestionarlos en su vista
             $clientes = \App\Models\Cliente::orderBy('nombre', 'asc')->get();
             return response()->json($clientes);
         }

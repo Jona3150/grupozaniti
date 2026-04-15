@@ -44,11 +44,11 @@
                     <div class="icono" aria-hidden="true"> 
                         <img src="{{ asset('img/plagas.png') }}" class="icono"> 
                     </div>
-                    <h3>Control y prevención de plagas</h3>
+                    <h3>Manejo Integrado de Plagas</h3>
                 </div>
                 <div class="servicio-back">
-                    <h3>Control y prevención de plagas</h3>
-                    <p>Diagnóstico, aplicación y seguimiento para eliminar y prevenir infestaciones.</p>
+                    <h3>Manejo Integrado de Plagas</h3>
+                    <p>Diagnóstico, monitoreo, tratamiento y prevención para control de plagas.</p>
                     <a href="{{ url('/servicios/plagas') }}" class="btn-more">Ver más</a>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="servicio-back">
                     <h3>Desinfección de espacios</h3>
-                    <p>Procesos meticulosos con insumos biodegradables y seguros.</p>
+                    <p>Tratamiento especializado para desinfección de superficies y purificación de ambientes.</p>
                     <a href="{{ url('/servicios/desinfeccion') }}" class="btn-more">Ver más</a>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="servicio-back">
                     <h3>Limpieza en general</h3>
-                    <p>Limpieza detallada para oficinas, hogares y negocios.</p>
+                    <p>Servicios detallados comerciales y habitacionales</p>
                     <a href="{{ url('/servicios/limpieza') }}" class="btn-more">Ver más</a>
                 </div>
             </div>
@@ -92,10 +92,10 @@
                     <div class="icono" aria-hidden="true">
                         <img src="{{ asset('img/mantenimiento.png') }}" class="icono">
                     </div>
-                    <h3>Mantenimiento en general</h3>
+                    <h3>Mantenimiento</h3>
                 </div>
                 <div class="servicio-back">
-                    <h3>Mantenimiento en general</h3>
+                    <h3>Mantenimiento</h3>
                     <p>Cambios de luminarias, instalaciones menores, resanes y pintura.</p>
                     <a href="{{ url('/servicios/mantenimiento') }}" class="btn-more">Ver más</a>
                 </div>
@@ -108,11 +108,11 @@
                     <div class="icono" aria-hidden="true"> 
                         <img src="{{ asset('img/pesticida.png') }}" class="icono"> 
                     </div>
-                    <h3>Venta de equipos y refacciones</h3>
+                    <h3>Venta de maquinaria y equipo</h3>
                 </div>
                 <div class="servicio-back">
-                    <h3>Venta de equipos y refacciones</h3>
-                    <p>Equipos de fumigación y desinfección con refacciones originales.</p>
+                    <h3>Venta de maquinaria y equipo</h3>
+                    <p>Equipos de fumigación y desinfección.</p>
                     <a href="{{ url('/servicios/venta') }}" class="btn-more">Ver más</a>
                 </div>
             </div>
@@ -124,12 +124,28 @@
                     <div class="icono" aria-hidden="true">
                         <img src="{{ asset('img/soporte.png') }}" class="icono">
                     </div>
-                    <h3>Reparación de equipos</h3>
+                    <h3>Reparación de equipos y venta de refacciones</h3>
                 </div>
                 <div class="servicio-back">
-                    <h3>Reparación de equipos</h3>
+                    <h3>Reparación de equipos y venta de refacciones</h3>
                     <p>Servicio técnico especializado con refacciones originales.</p>
                     <a href="{{ url('/servicios/reparacion') }}" class="btn-more">Ver más</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="servicio-flip">
+            <div class="servicio-inner">
+                <div class="servicio-front">
+                    <div class="icono" aria-hidden="true">
+                        <img src="{{ asset('img/comercio.png') }}" class="icono">
+                    </div>
+                    <h3>Venta de productos para fumigación</h3>
+                </div>
+                <div class="servicio-back">
+                    <h3>Venta de productos para fumigación</h3>
+                    <p>Venta y asesoría de productos 100% originales.</p>
+                    <a href="{{ url('/servicios/ventas') }}" class="btn-more">Ver más</a>
                 </div>
             </div>
         </article>

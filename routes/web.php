@@ -91,7 +91,7 @@ Route::post('/logout', function (Request $request) {
 
         Route::get('/datos-dashboard', [DashboardController::class , 'getStats']);
 
-        // Ruta para técnicos (Sonia, Fernando, Víctor)
+        
         Route::get('/datos-empleados', function () {
             return \App\Models\User::whereIn('role', ['admin', 'empleado', 'dueño'])->get();
         }
@@ -137,4 +137,4 @@ Route::post('/logout', function (Request $request) {
 
         // Esta ruta atrapará /servicios/plagas, /servicios/venta, etc.        
         Route::get('/servicios/{slug}', [ServicioController::class , 'show'])->name('servicios.show');
-    //});
+  //  });
