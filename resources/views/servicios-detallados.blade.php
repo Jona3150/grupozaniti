@@ -372,6 +372,10 @@
         height: 220px;
         border-radius: 18px;
       }
+      .service-description *:focus {
+          outline: none;
+          box-shadow: none;
+      }
     }
   </style>
 
@@ -405,9 +409,11 @@
           @endforeach
         </ul>
 
-        <div class="service-highlight">
-          {{ $info['desc'] }}
-        </div>
+        @if(isset($info['desc']) && trim($info['desc']) !== '')
+          <div class="service-highlight">
+            {{ $info['desc'] }}
+          </div>
+        @endif
       </div>
 
       <aside class="call-to-action-card">
