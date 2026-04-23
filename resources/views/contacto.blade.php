@@ -535,6 +535,17 @@
                         <span class="btn-submit-icon"><i class="bi bi-send-fill"></i></span>
                         <span>Enviar mensaje</span>
                     </button>
+                    <div class="legal-consent-container" style="margin-bottom: 25px; text-align: left;">
+    <label class="checkbox-wrapper" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
+        <input type="checkbox" id="privacy_policy" name="privacy_policy" style="width: 20px; height: 20px; accent-color: #88E6ED; margin-top: 4px;" required>
+        <span class="checkbox-text" style="font-size: 0.9rem; color: #444; line-height: 1.4;">
+            He leído y acepto el <a href="{{ url('/aviso-privacidad') }}" target="_blank" style="color: #00bcd4; font-weight: 700; text-decoration: underline;">Aviso de Privacidad</a>. Entiendo que mis datos serán usados únicamente para dar seguimiento a mi solicitud de contacto.
+        </span>
+    </label>
+    <small id="privacy-error" style="color: #ef4444; font-size: 0.8rem; display: none; margin-left: 32px; margin-top: 5px;">
+        <i class="bi bi-exclamation-circle"></i> Debes aceptar el aviso de privacidad para continuar.
+    </small>
+</div>
                 </form>
             </div>
 
@@ -629,29 +640,39 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     form.addEventListener('submit', function(e) {
-        const nameVal = nameInput ? nameInput.value.trim() : '';
-        const messageVal = document.getElementById('message').value.trim();
+    const nameVal = nameInput ? nameInput.value.trim() : '';
+    const messageVal = document.getElementById('message').value.trim();
+    
+    // NUEVA VALIDACIÓN: Checkbox de privacidad
+    const privacyCheck = document.getElementById('privacy_policy');
+    const privacyError = document.getElementById('privacy-error');
 
-        const nameOk = /^[A-Za-záéíóúÁÉÍÓÚüÜñÑ ]{3,100}$/.test(nameVal);
-        const messageOk = messageVal.length >= 10;
+    const nameOk = /^[A-Za-záéíóúÁÉÍÓÚüÜñÑ ]{3,100}$/.test(nameVal);
+    const messageOk = messageVal.length >= 10;
+    const privacyOk = privacyCheck.checked; // Verifica si está marcado
 
-        if (nameError) nameError.style.display = nameOk ? 'none' : 'inline';
+    // Mostrar/ocultar errores
+    if (nameError) nameError.style.display = nameOk ? 'none' : 'inline';
+    
+    const msgError = document.getElementById('message-error');
+    if (msgError) msgError.style.display = messageOk ? 'none' : 'inline';
+    
+    if (privacyError) {
+        privacyError.style.display = privacyOk ? 'none' : 'block';
+    }
 
-        const msgError = document.getElementById('message-error');
-        if (msgError) msgError.style.display = messageOk ? 'none' : 'inline';
+    // Si algo falta, detenemos el envío
+    if (!nameOk || !messageOk || !privacyOk) {
+        e.preventDefault();
+        return;
+    }
 
-        if (!nameOk || !messageOk) {
-            e.preventDefault();
-            return;
-        }
-
-        if (btnSubmit) {
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = '<span class="btn-submit-icon"><i class="bi bi-hourglass-split"></i></span><span>Enviando...</span>';
-            btnSubmit.style.opacity = '0.7';
-            btnSubmit.style.cursor = 'not-allowed';
-        }
-    });
+    // Si todo está bien, procedemos con el botón de carga
+    if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<span class="btn-submit-icon"><i class="bi bi-hourglass-split"></i></span> Enviando...';
+    }
+});
 });
 </script>
 @endsection

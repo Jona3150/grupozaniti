@@ -687,7 +687,17 @@
                     <i class="bi bi-send-check"></i>
                     Enviar solicitud de cotización
                 </button>
-
+<div class="legal-consent-container" style="margin-top: 25px; margin-bottom: 25px; padding: 15px; background: var(--zaniti-surface-2); border-radius: 12px; border: 1px solid var(--zaniti-border);">
+    <label class="checkbox-wrapper" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
+        <input type="checkbox" id="privacy_policy_cot" name="privacy_policy" style="width: 22px; height: 22px; accent-color: var(--zaniti-primary); margin-top: 2px;" required>
+        <span class="checkbox-text" style="font-size: 0.95rem; color: var(--zaniti-ink-soft); line-height: 1.5;">
+            Acepto que mis datos y las imágenes adjuntas sean tratados conforme al <a href="{{ url('/aviso-privacidad') }}" target="_blank" style="color: var(--zaniti-primary-strong); font-weight: 700; text-decoration: underline;">Aviso de Privacidad</a> de Zaniti para la elaboración de mi presupuesto.
+        </span>
+    </label>
+    <div id="privacy-error" style="color: #dc2626; font-size: 0.85rem; display: none; margin-top: 10px; font-weight: 600;">
+        <i class="bi bi-exclamation-triangle-fill"></i> Es necesario aceptar el aviso de privacidad para procesar tu cotización.
+    </div>
+</div>
                 <p class="cotizacion-note">
                     <i class="bi bi-info-circle"></i>
                     Un asesor de Zaniti se pondrá en contacto contigo lo antes posible para brindarte la información que necesitas.
@@ -733,34 +743,56 @@ document.addEventListener('DOMContentLoaded', function() {
     // Botón anti-doble envío
     if (form && btnSubmit) {
         form.addEventListener('submit', function(e) {
-            const nameVal  = nameInput ? nameInput.value.trim() : '';
-            const phoneVal = phoneInput ? phoneInput.value : '';
-            const nameOk   = /^[A-Za-záéíóúÁÉÍÓÚüÜñÑ ]{2,100}$/.test(nameVal);
-            const phoneOk  = /^[0-9]{10}$/.test(phoneVal);
+    const nameVal  = nameInput ? nameInput.value.trim() : '';
+    const phoneVal = phoneInput ? phoneInput.value : '';
+    
+    // Validaciones de formato
+    const nameOk   = /^[A-Za-záéíóúÁÉÍÓÚüÜñÑ ]{2,100}$/.test(nameVal);
+    const phoneOk  = /^[0-9]{10}$/.test(phoneVal);
 
-            const areaInput = document.getElementById('area-input');
-            const areaError = document.getElementById('area-error');
-            let areaOk = true;
+    // Validación de Área (m2)
+    const areaInput = document.getElementById('area-input');
+    const areaError = document.getElementById('area-error');
+    let areaOk = true;
 
-            if (areaInput && areaInput.required) {
-                const areaVal = parseFloat(areaInput.value);
-                areaOk = !isNaN(areaVal) && areaVal > 0;
-                if (areaError) areaError.style.display = areaOk ? 'none' : 'inline';
-            }
+    if (areaInput && areaInput.required) {
+        const areaVal = parseFloat(areaInput.value);
+        areaOk = !isNaN(areaVal) && areaVal > 0;
+        if (areaError) areaError.style.display = areaOk ? 'none' : 'inline';
+    }
 
-            if (!nameOk && nameError)  nameError.style.display  = 'inline';
-            if (!phoneOk && phoneError) phoneError.style.display = 'inline';
+    // --- NUEVA VALIDACIÓN: Checkbox de Privacidad ---
+    const privacyCheck = document.getElementById('privacy_policy_cot');
+    const privacyError = document.getElementById('privacy-error');
+    const privacyOk = privacyCheck ? privacyCheck.checked : true; // true si no existe el elemento
 
-            if (!nameOk || !phoneOk || !areaOk) {
-                e.preventDefault();
-                return;
-            }
+    if (privacyError) {
+        privacyError.style.display = privacyOk ? 'none' : 'block';
+    }
+    // ------------------------------------------------
 
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';
-            btnSubmit.style.opacity = '0.7';
-            btnSubmit.style.cursor  = 'not-allowed';
-        });
+    // Mostrar errores de texto
+    if (!nameOk && nameError)   nameError.style.display  = 'inline';
+    if (!phoneOk && phoneError) phoneError.style.display = 'inline';
+
+    // Validación final: Si algo falla, detenemos el envío
+    if (!nameOk || !phoneOk || !areaOk || !privacyOk) {
+        e.preventDefault();
+        
+        // Si el error fue por privacidad, hacemos un scroll suave hacia el aviso
+        if (!privacyOk && privacyCheck) {
+            privacyCheck.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        return;
+    }
+
+    // Efecto visual de "Enviando"
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';
+    btnSubmit.style.opacity = '0.7';
+    btnSubmit.style.cursor  = 'not-allowed';
+});
     }
 
     // === 1. LÓGICA DE MOSTRAR/OCULTAR METROS CUADRADOS ===

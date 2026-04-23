@@ -34,6 +34,11 @@
     <div class="sidebar-footer">
         <form method="POST" action="{{ route('logout') }}" id="logout-form">
             @csrf
+            
+            <a href="{{ route('inicio') }}" class="nav-item go-home">
+    <i class="fas fa-external-link-alt"></i> Ver Sitio Público
+        </a>
+            
             <button type="submit" class="logout-link">
                 <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
             </button>

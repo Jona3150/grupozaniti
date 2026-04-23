@@ -115,6 +115,9 @@
 
             <button type="submit" class="btn-login">Iniciar Sesión</button>
         </form>
+        <p style="font-size: 0.75rem; color: #718096; margin-top: 20px;">
+    Al ingresar, aceptas los <a href="{{ url('/terminos-condiciones') }}" target="_blank" style="color: #00b4d8; text-decoration: none;">Términos de Uso y Confidencialidad</a> de la plataforma Zaniti.
+</p>
     </div>
 
 </body>
