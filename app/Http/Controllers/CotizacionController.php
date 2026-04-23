@@ -32,7 +32,10 @@ class CotizacionController extends Controller
             $data['area'] = 'No aplica';
         }
 
-        Mail::to('dejesuscynthia94@gmail.com')->send(new CotizacionMail($data));
+        $image = $request->file('image');
+
+        Mail::to('dejesuscynthia94@gmail.com')
+            ->send(new CotizacionMail($data, $image));
 
         return back()->with('success', 'En breve uno de nuestros asesores se pondrá en contacto contigo.');
     }

@@ -802,15 +802,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function toggleAreaField() {
         const valor = serviceSelect.value;
+
         if (valor === 'venta' || valor === 'reparacion' || valor === 'mantenimiento') {
             if (contenedorArea) contenedorArea.style.display = 'none';
+
             if (inputArea) {
-                inputArea.value = 0;
+                inputArea.value = '';
                 inputArea.required = false;
+                inputArea.disabled = true; // 🔥 clave
             }
+
         } else {
             if (contenedorArea) contenedorArea.style.display = 'grid';
-            if (inputArea) inputArea.required = true;
+
+            if (inputArea) {
+                inputArea.disabled = false; // 🔥 reactivar
+                inputArea.required = true;
+            }
         }
     }
 
